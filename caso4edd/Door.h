@@ -1,5 +1,7 @@
 #include <iostream>
 #include <string>
+#include "List.h"
+#include "ListNode.h"
 
 using namespace std;
 
@@ -10,31 +12,67 @@ using namespace std;
 
 class Door {
     private: 
-        int numDoorsConect;
-
+        int numDoorsConect = 0;
+        List<Door> *listadoors;
 
     public:
         Door() {
-            
+            listadoors = new List<Door>();
         }
 
         int generarConexiones(int nCreando) {
+            if(nCreando == 0) {
+                return 0;
+            }
             srand((unsigned) time(NULL)); 
             numDoorsConect = rand() % (5 - 2) + 2;
-            cout << numDoorsConect << endl;
 
-            //creo otras puertas while usando el numero generado
-            //y las pongo en un vector de puertas que se conectan a esta (global)
-            //hacer un get para el vector
-            //esas puertas nuevas que se generan hay que restarle al nCreando la cantidad creada y dependiendo del resul, hay casos distintos
-            //pero eso se ve later, maybe nCreando se puede dividir en la cantidad de puertas que se generan en la inicial
+/*
+            while(nCreando - numDoorsConect < 0) {
+                numDoorsConect = rand() % (5 - 2) + 2;
+                if(nCreando == 1) {
+                    for(int i = 0; i < listadoors->getSize(); i++) {
+                        if(listadoors->find(i)->getConectionsNum() > 1 && listadoors->find(i)->getConectionsNum() < 4) {
+                            //porque si la que falta es una, no se puede agregar a una puerta sin conexiones
+                            //ya que el minimo es dos, y tampoco agregarse a una de 4 conexiones, porque ese es el max
+                            Door *newDoor = new Door();
+                            listadoors->find(i)->addDoorToDoor(newDoor);
+                        }
+                    }
+                }
+            }
+*/
+            nCreando = nCreando - numDoorsConect;
+     
+            for(int i = 0; i < numDoorsConect; i++) {
+                Door *puerta = new Door();
+                listadoors->add(puerta);
+            }
+
+            int i = 0;
             
-            //luego el numero que se retorna es la cantidad de puertas que se crearon para restarselo al nCreando afuera
-
-            return 0;
+            while(i < nCreando) {
+                //mientras estamos en el rango de las puertas que falta de crear
+                //generamos numero aleatorio (hara de index) para ir creando en las puertas afiliadas a esta 
+                srand((unsigned) time(NULL)); 
+                int index = rand() % (listadoors->getSize() - 0) + 0;
+                nCreando = listadoors->find(index)->generarConexiones(nCreando);
+            }
+            
+            return nCreando;
         }
 
+        void addDoorToDoor(Door *theDoor) {
+            this->listadoors->add(theDoor);
+        }
 
+        List<Door>* getConnectedDoors() {
+            return listadoors;
+        }
+
+        int getConectionsNum() {
+            return numDoorsConect;
+        }
 };
 
 #endif
