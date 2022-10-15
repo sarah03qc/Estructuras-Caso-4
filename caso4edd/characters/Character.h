@@ -33,6 +33,22 @@ class Character{
 
             }
 
+            string getName(){
+                return this->name;
+            }
+
+            int getCurrentMinerals(){
+                return this->currentMinerals;
+            }
+
+            int getLoadingCapacitys(){
+                return this->loadingCapacity;
+            }
+            
+            int getSpeed(){
+                return this->speed;
+            }
+
             void setCharacterStrategy(){
 
             }
