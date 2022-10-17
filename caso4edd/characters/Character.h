@@ -52,15 +52,7 @@ class Character{
             void setCharacterStrategy(){
 
             }
-            void moveBack(){
-
-            }
-            void moveFoward(){
-                /*
-                Calcula la distancia que hay 
-                */
-
-            }
+            
 
             void mine(){
                 this->currentState = camara;
@@ -70,9 +62,6 @@ class Character{
                 //currentMinerals ++
             }
 
-            void returnMineral(){
-
-            }
 
             void showCurrentState(){
                 cout << "El " << name << " esta en " << this->charStates[currentState] << endl; 
