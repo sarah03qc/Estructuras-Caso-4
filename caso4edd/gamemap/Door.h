@@ -2,6 +2,7 @@
 #include <string>
 #include "List.h"
 #include "ListNode.h"
+#include "Mina.h"
 
 using namespace std;
 
@@ -16,6 +17,7 @@ class Door {
         bool tieneMina = false;
         int minePosibilities = 0;
         int random;
+        Mina mine;
 
     public:
         Door() {
@@ -30,6 +32,7 @@ class Door {
             if(minePosibilities <= 66) {
                 tieneMina = true;
             }
+            //aca se van a poner a crear la mina
         }
 
         int generarConexiones(int nCreando) {

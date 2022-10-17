@@ -2,12 +2,24 @@
 #include <string>
 #include <sstream>
 #include "Door.h"
+#include "Mina.h"
+#include "Camara.h"
 
 using namespace std;
 
 
 int main() {
+
     srand((unsigned) time(NULL));
+    for(int i = 0; i < 4; i++) {
+        cout << "Corriendo num " << i << endl;
+        Camara* camera = new Camara();
+        camera->generateMinerales();
+        camera->generateDistance();
+        camera->calcularPotencial();
+    }
+    
+    /*  //prueba de generar puertas y sus conexiones, funciona
     Door* puerta = new Door();
     
     cout << "Faltan: " << puerta->generarConexiones(10) << endl;
@@ -35,6 +47,7 @@ int main() {
             }
         }
     }
+    */
 
     return 0;
 }
