@@ -19,5 +19,6 @@ int main() {
     nodo1 = arbol->add(nodo1,new int(60));
     nodo1 = arbol->add(nodo1,new int(50));
 
+
     return 0;
 }
