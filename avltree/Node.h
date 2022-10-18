@@ -16,14 +16,12 @@ class Node {
         int balance;
         Node *left;
         Node *right;  
-        Node *parent;
     
     public:
         Node() {
             data = NULL;
             left = NULL;
             right = NULL;   
-            parent = NULL;
             height = 1;
             balance = 0;
         }
@@ -32,7 +30,6 @@ class Node {
             this->data = pData;
             left = NULL;
             right = NULL; 
-            parent = NULL; 
         }
 
         T* getData() {
@@ -58,10 +55,6 @@ class Node {
                 return NULL;
             }
             return right;     
-        }
-
-        Node* getParent() {    
-            return parent;     
         }
 
         int getHeight() {
@@ -93,10 +86,6 @@ class Node {
         void setBalance(int newb) {
             this->balance = newb;
         }
-
-        void setParent(Node<T> *pParent) {  
-            this->parent = pParent;      
-        } 
 };
 
 #endif

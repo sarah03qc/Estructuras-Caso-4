@@ -25,21 +25,10 @@ class AVLTree {
 
         Node<T>* rrRotac(Node<T> *upper) {
             Node<T> *temp;
-            if(upper->getParent() != NULL) {
-                Node<T> *parent = upper->getParent();
-                temp->setParent(parent);
-                upper->setParent(temp);
-
-                if(parent->getLeft() == upper) {
-                    parent->setLeft(temp);
-                } else {
-                    parent->setRight(temp);
-                }
-            }
+            
             temp = upper->getRight();
             if(temp->getLeft() != NULL) {
                 upper->setRight(temp->getLeft());
-                temp->getLeft()->setParent(upper);
             }
             else{
                 upper->setRight(NULL);
@@ -57,21 +46,10 @@ class AVLTree {
 
         Node<T>* llRotac(Node<T> *upper) {
             Node<T> *temp;
-            if(upper->getParent() != NULL) {
-                Node<T> *parent = upper->getParent();
-                temp->setParent(parent);
-                upper->setParent(temp);
-
-                if(parent->getLeft() == upper) {
-                    parent->setLeft(temp);
-                } else {
-                    parent->setRight(temp);
-                }
-            }
+            
             temp = upper->getLeft();
             if(temp->getRight() != NULL) {
                 upper->setLeft(temp->getRight());
-                temp->getRight()->setParent(upper);
             }
             else{
                 upper->setLeft(NULL);
