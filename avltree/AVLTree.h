@@ -40,8 +40,6 @@ class AVLTree {
             temp = upper->getRight();
             if(temp->getLeft() != NULL) {
                 upper->setRight(temp->getLeft());
-            }
-            if(temp->getLeft() != NULL) {
                 temp->getLeft()->setParent(upper);
             }
             temp->setLeft(upper);
@@ -101,20 +99,20 @@ class AVLTree {
         }
 
         Node<T>* checkbalance(Node<T> *temp, T *pData) {
-            int balanceFactor = temp->getRight()->getHeight() - temp->getLeft()->getHeight();
+            int balanceFactor =  temp->getLeft()->getHeight() - temp->getRight()->getHeight();
             temp->setBalance(balanceFactor);
             //el problema es que aveces temp->getRight() va a ser null, pero siendo null no se
             //puede hacerle ->getData() porque da segmentationfault 
             //y si le hago una condicion extra de que eso no sea null, simplemente no entra a la 
             //condicion y se va a hacer la otra
             if(balanceFactor < -1) {
-                if(temp->getRight() != NULL && *pData > *temp->getRight()->getData()) {
+                if(*pData > *temp->getRight()->getData()) {
                     temp = this->llRotac(temp);
                 } else {
                     temp = this->lrRotac(temp);
                 }
             } else if(balanceFactor > 1) {
-                if(temp->getLeft() != NULL && *pData > *temp->getLeft()->getData()) {
+                if(*pData > *temp->getLeft()->getData()) {
                     temp = this->rlRotac(temp);
                 } else {
                     temp = this->rrRotac(temp);
