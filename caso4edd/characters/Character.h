@@ -15,7 +15,7 @@ class Character{
             int currentMinerals;
             int loadingCapacity;
             int speed;
-            int strategyId;
+            IStrategy *characterStrategy;
             int currentState;
             enum charStates{
                 puertaRaiz = 0,
@@ -49,18 +49,32 @@ class Character{
                 return this->speed;
             }
 
-            void setCharacterStrategy(){
+            void setCharacterStrategy(IStrategy *chosedStrategy){
+                this->characterStrategy = chosedStrategy;
+            }
+
+            void startMoving(){
 
             }
             
 
-            void mine(){
+            void mine(Camara *pCamara){
                 this->currentState = camara;
                 cout << "El " << name << "esta minando"<< endl;
                 // codigo para sacar el mineral de la camara
-                cout << "El " << name << "tiene "<< currentMinerals << endl;
-                //currentMinerals ++
+                if(this->getLoadingCapacitys() - pCamara->getMinerales() >= 0) {
+                //significa que segun su capacidad de carga, pueden tomar todo lo que hay en la camara
+                    this->currentMinerals += pCamara->getMinerales();
+                    pCamara->setMinerales(0);
+                } else {
+                    //se toma lo que se puede
+                    this->currentMinerals += this->getLoadingCapacitys();
+                    pCamara->setMinerales(pCamara->getMinerales() - this->getLoadingCapacitys());
+                }
+                cout << "El " << this->name << "tiene "<< currentMinerals << endl;
             }
+ 
+
 
 
             void showCurrentState(){

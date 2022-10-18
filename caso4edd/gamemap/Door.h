@@ -86,6 +86,10 @@ class Door {
         bool hasMine() {
             return tieneMina;
         }
+
+        Mina getMine(){
+            return mine;
+        }
 };
 
 #endif

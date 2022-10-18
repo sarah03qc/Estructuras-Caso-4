@@ -35,23 +35,12 @@ class Camara {
             return potencialMinado;
         }
 
-        int takeMinerales(Character personaje) {
-            int bolso;
-            if(personaje.getLoadingCapacitys() - minerales >= 0) {
-                //significa que segun su capacidad de carga, pueden tomar todo lo que hay en la camara
-                bolso = minerales;
-                personaje.mine();
-                //hay que ponerle algo al personaje para cambiar los minerales que tiene y pasarselos desde aca
-                minerales = 0;
-                return bolso;
-            } else {
-                //se toma lo que se puede
-                bolso = personaje.getLoadingCapacitys();
-                personaje.mine();
-                minerales = minerales - personaje.getLoadingCapacitys();
-                return bolso;
-            }
-            
+        int getMinerales(){
+            return this->minerales;
+        }
+
+        int setMinerales(int pCantidad){
+            this->minerales = pCantidad;
         }
 
 };

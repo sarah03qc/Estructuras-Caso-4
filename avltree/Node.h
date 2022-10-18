@@ -79,7 +79,7 @@ class Node {
         }
 
         void setLeft(Node<T> *pValue) {
-            cout << "pvalue es " << *pValue->getData() << endl;
+            //cout << "pvalue es " << *pValue->getData() << endl;
             this->left = pValue;
         }
 
