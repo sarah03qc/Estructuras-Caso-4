@@ -36,13 +36,13 @@ class AVLTree {
                     parent->setRight(temp);
                 }
             }
-
             temp = upper->getRight();
             if(temp->getLeft() != NULL) {
                 upper->setRight(temp->getLeft());
-            }
-            if(temp->getLeft() != NULL) {
                 temp->getLeft()->setParent(upper);
+            }
+            else{
+                upper->setRight(NULL);
             }
             temp->setLeft(upper);
 
@@ -71,9 +71,10 @@ class AVLTree {
             temp = upper->getLeft();
             if(temp->getRight() != NULL) {
                 upper->setLeft(temp->getRight());
-            }
-            if(temp->getRight() != NULL) {
                 temp->getRight()->setParent(upper);
+            }
+            else{
+                upper->setLeft(NULL);
             }
             temp->setRight(upper);
 
@@ -101,23 +102,23 @@ class AVLTree {
         }
 
         Node<T>* checkbalance(Node<T> *temp, T *pData) {
-            int balanceFactor = temp->getRight()->getHeight() - temp->getLeft()->getHeight();
+            int balanceFactor =  temp->getLeft()->getHeight() - temp->getRight()->getHeight();
             temp->setBalance(balanceFactor);
             //el problema es que aveces temp->getRight() va a ser null, pero siendo null no se
             //puede hacerle ->getData() porque da segmentationfault 
             //y si le hago una condicion extra de que eso no sea null, simplemente no entra a la 
             //condicion y se va a hacer la otra
             if(balanceFactor < -1) {
-                if(temp->getRight() != NULL && *pData > *temp->getRight()->getData()) {
-                    temp = this->llRotac(temp);
+                if(*pData > *temp->getRight()->getData()) {
+                    temp = this->rrRotac(temp);
                 } else {
-                    temp = this->lrRotac(temp);
+                    temp = this->rlRotac(temp);
                 }
             } else if(balanceFactor > 1) {
-                if(temp->getLeft() != NULL && *pData > *temp->getLeft()->getData()) {
-                    temp = this->rlRotac(temp);
+                if(*pData > *temp->getLeft()->getData()) {
+                    temp = this->lrRotac(temp);
                 } else {
-                    temp = this->rrRotac(temp);
+                    temp = this->llRotac(temp);
                 }
             }
             return temp;
@@ -135,12 +136,12 @@ class AVLTree {
             } else if(*pData < *currentt->getData()) {
                 currentt->setLeft(add(currentt->getLeft(), pData));
                 currentt->setHeight(1 + maximo(currentt->getLeft()->getHeight(), currentt->getRight()->getHeight()));
-                this->checkbalance(currentt, pData);
+                currentt = this->checkbalance(currentt, pData);
                 quantity++;
             } else if(*pData >= *currentt->getData()) {
                 currentt->setRight(add(currentt->getRight(), pData));
                 currentt->setHeight(1 + maximo(currentt->getLeft()->getHeight(), currentt->getRight()->getHeight()));
-                this->checkbalance(currentt, pData);
+                currentt = this->checkbalance(currentt, pData);
                 quantity++;
             } return currentt;
         }
