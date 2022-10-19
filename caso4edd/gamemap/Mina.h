@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include "../../avltree/AVLTree.h"
+#include "../../avltree/Node.h"
 #include "Camara.h"
 
 using namespace std;
@@ -18,16 +19,28 @@ class Mina {
     public:
         Mina() {
             cantidadCamaras = rand() % (72 - 9) + 9;
-            Node<Camara>* nodo1 = NULL;
+            Node<Camara> *nodo = NULL;
+            cout << "Cantidad generada de camaras es: " << cantidadCamaras << endl;
             for(int i = 0; i < cantidadCamaras; i++) {
                 Camara *chamber = new Camara();
                 chamber->generateMinerales();
                 chamber->generateDistance();
-                //nodo1 = estaMina->add(nodo1,chamber->calcularPotencial());    //hay que hacer algo en nodo y arbol para guardar data pero basarse en algo 
-                //                                                              especifico (potencial minado) para ordenarlos, porque el arbol actual ordena segun la data
+                alturaTotal = alturaTotal + chamber->getDistance();
+                if(alturaTotal >= 720) {
+                    cout << "Se para porque se pasa del limite" << endl;
+                    alturaTotal = alturaTotal - chamber->getDistance(); 
+                    break;
+                }
+                int potencia = chamber->calcularPotencial();
+                nodo = estaMina->add(nodo, new int(potencia));   //se agrega nodo a la mina con el potencial
+                cout << "agregando nodo al arbol" << endl;
+                Node<Camara> *found = estaMina->find(nodo, new int(potencia));     //se busca para asignarle "contenido", que es la camara
+                found->setContent(chamber);
+                cout << "maybe minerals " << found->getContent()->getMinerales() << endl;
+                cout << "Camara set " << i << endl;
+
             }
         }
-
      
 };
 

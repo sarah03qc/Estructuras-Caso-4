@@ -79,7 +79,7 @@ class AVLTree {
             return this->rrRotac(upper);
         }
 
-        Node<T>* checkbalance(Node<T> *temp, T *pData) {
+        Node<T>* checkbalance(Node<T> *temp, int *pData) {
             int balanceFactor =  temp->getLeft()->getHeight() - temp->getRight()->getHeight();
             temp->setBalance(balanceFactor);
 
@@ -99,7 +99,7 @@ class AVLTree {
             return temp;
         }
 
-        Node<T>* add(Node<T> *currentt, T *pData) {
+        Node<T>* add(Node<T> *currentt, int *pData) {
             
             if(currentt == NULL) {
                 Node<T> *newNode = new Node<T>(pData);
@@ -143,6 +143,7 @@ class AVLTree {
             }
         }
 
+
         void destroy(Node<T> *toDestroy) {
             if(toDestroy != NULL) {
                 destroy(toDestroy->getLeft());
@@ -152,7 +153,7 @@ class AVLTree {
             }
         }
 
-        Node<T>* find(Node<T> *temp, T *searching) {
+        Node<T>* find(Node<T> *temp, int *searching) {
             //recibe root de param, y los datos del nodo que se busca
             Node<T>* found = NULL; 
             if(temp != NULL) {

@@ -7,12 +7,12 @@
 template <class T>
 class List {
     private:
-        Node<T> *first;
-        Node<T> *last;
+        ListNode<T> *first;
+        ListNode<T> *last;
         int quantity;
         bool empty;
-        Node<T> *searchPosition = NULL;
-        Node<T> *searchBehind = NULL;
+        ListNode<T> *searchPosition = NULL;
+        ListNode<T> *searchBehind = NULL;
 
     public:
         List() {
@@ -23,7 +23,7 @@ class List {
         }
 
         void add(T *pData) {
-            Node<T> *newNode = new Node<T>(pData);
+            ListNode<T> *newNode = new ListNode<T>(pData);
 
             if (quantity>0) {
                 this->last->setNext(newNode);
@@ -37,7 +37,7 @@ class List {
             quantity++;
         }
 
-        Node<T>* getFirst() {
+        ListNode<T>* getFirst() {
             return this->first;
         }
 
@@ -70,7 +70,7 @@ class List {
         void insert(int pPosition, T *pData) {
             
             if (pPosition<getSize() && first!=NULL) {
-                Node<T> *newNodo = new Node<T>(pData);
+                ListNode<T> *newNodo = new ListNode<T>(pData);
 
                 T* result = find(pPosition);
                 
@@ -92,7 +92,7 @@ class List {
         bool remove(int pPosition) {
             bool result = false;
             if (first!=NULL && pPosition<getSize()) {
-                Node<T> *search = first;
+                ListNode<T> *search = first;
                 if (pPosition!=0) {
                     T* data = find(pPosition);
 

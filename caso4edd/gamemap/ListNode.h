@@ -1,26 +1,26 @@
 #include <iostream>
 
-#ifndef NODE 
+#ifndef LISTNODE 
 
-#define NODE 1
+#define LISTNODE 1
 
 using namespace std;
 
 template <class T>
-class Node {
+class ListNode {
     private:
         T *data;
-        Node *next;
-        Node *previous;   
+        ListNode *next;
+        ListNode *previous;   
     
     public:
-        Node() {
+        ListNode() {
             data = NULL;
             next = NULL;
             previous = NULL;   
         }
 
-        Node(T *pData) {
+        ListNode(T *pData) {
             this->data = pData;
             next = NULL;
             previous = NULL;  
@@ -30,19 +30,19 @@ class Node {
             return data;
         }
 
-        Node* getNext() {
+        ListNode* getNext() {
             return next;
         }
 
-        Node* getPrevious() {   
+        ListNode* getPrevious() {   
             return previous;   
         }
 
-        void setNext(Node *pValue) {
+        void setNext(ListNode *pValue) {
             this->next = pValue;
         }
 
-        void setPrevious(Node *pValue) {   
+        void setPrevious(ListNode *pValue) {   
             this->previous = pValue;       
         }
         

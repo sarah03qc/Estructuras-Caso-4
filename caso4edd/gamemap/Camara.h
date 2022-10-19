@@ -1,6 +1,5 @@
 #include <iostream>
 #include <string>
-#include "../characters/Character.h"
 
 using namespace std;
 
@@ -15,9 +14,6 @@ class Camara {
         int potencialMinado = 0;
 
     public:
-        Camara() {
-
-        }
 
         void generateMinerales() {
             minerales = rand() % (20 - 1) + 1;
@@ -35,11 +31,15 @@ class Camara {
             return potencialMinado;
         }
 
-        int getMinerales(){
+        int getMinerales() {
             return this->minerales;
         }
 
-        int setMinerales(int pCantidad){
+        int getDistance() {
+            return this->distanceUpperChamber;
+        }
+
+        int setMinerales(int pCantidad) {
             this->minerales = pCantidad;
         }
 

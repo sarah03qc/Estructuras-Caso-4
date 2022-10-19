@@ -11,13 +11,8 @@ using namespace std;
 int main() {
 
     srand((unsigned) time(NULL));
-    for(int i = 0; i < 4; i++) {
-        cout << "Corriendo num " << i << endl;
-        Camara* camera = new Camara();
-        camera->generateMinerales();
-        camera->generateDistance();
-        camera->calcularPotencial();
-    }
+    Mina *mine = new Mina();
+    
     
     /*  //prueba de generar puertas y sus conexiones, funciona
     Door* puerta = new Door();

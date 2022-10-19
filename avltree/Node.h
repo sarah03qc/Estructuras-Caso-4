@@ -11,7 +11,8 @@ using namespace std;
 template <class T>
 class Node {
     private:
-        T *data;
+        int *data;
+        T *content;
         int height = 1;
         int balance;
         Node *left;
@@ -19,28 +20,36 @@ class Node {
     
     public:
         Node() {
-            data = NULL;
+            data = 0;
             left = NULL;
             right = NULL;   
             height = 1;
             balance = 0;
         }
 
-        Node(T *pData) {
+        Node(int *pData) {
             this->data = pData;
             left = NULL;
             right = NULL; 
         }
 
-        T* getData() {
-            if(this == NULL) {
+        int* getData() {
+            if(this == 0) {
                 return NULL;
             }
             return data;
         }
 
-        void setData(T *pData) {
+        T* getContent() {
+            return content;
+        }
+
+        void setData(int *pData) {
             this->data = pData;
+        }
+
+        void setContent(T *pcontent) {
+            this->content = pcontent;
         }
 
         Node* getLeft() {
