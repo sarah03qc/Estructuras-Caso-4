@@ -41,6 +41,9 @@ class Mina {
 
             }
         }
+        AVLTree<Camara> *getEstaMina(){
+            return this->estaMina;
+        }
      
 };
 

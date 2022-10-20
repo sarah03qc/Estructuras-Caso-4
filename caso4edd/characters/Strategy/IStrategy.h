@@ -4,11 +4,6 @@
 /*
 doubtful strategy: el personaje abre cada puerta y hasta que se encuentre un tunel y mina una cantidad aleatoria 
 entre su capacidad y la cantidad que hay 
-// meterse hasta el fondo
-// agarra todo lo puede
-
-
-egocentric strategy: el personaje decide rapidamente de forma aleatoria a cual puerta entrar y no puede devolverse.
 careful strategy: el personaje entra aleatoriamente a cualquier puerta y mina dejando siempre un mineral.
 selfless strategy: el personaje se lleva todo el mineral de la camara sin importarle si puede haber algun 
 otro personaje en la misma red.
@@ -20,8 +15,9 @@ otro personaje en la misma red.
 class IStrategy{
         public: 
                 virtual void strategyMove(List<Door> *pListaDoors) = 0;
-        protected:
-                int id;
+                virtual void travel() = 0;
+                virtual void strategyMine(Camara *pCamara) = 0;
+
 };
 
 #endif

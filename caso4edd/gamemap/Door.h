@@ -17,7 +17,7 @@ class Door {
         bool tieneMina = false;
         int minePosibilities = 0;
         int random;
-        Mina mine;
+        Mina *mine;
 
     public:
         Door() {
@@ -87,7 +87,7 @@ class Door {
             return tieneMina;
         }
 
-        Mina getMine(){
+        Mina *getMine(){
             return mine;
         }
 };

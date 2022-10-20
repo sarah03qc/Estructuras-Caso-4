@@ -60,7 +60,7 @@ class Character{
                 //characterStrategy->strategyMove();
             }
             
-
+            /*
             void mine(Camara *pCamara){
                 cout << "El " << name << "esta minando"<< endl;
                 // codigo para sacar el mineral de la camara
@@ -75,6 +75,7 @@ class Character{
                 }
                 cout << "El " << this->name << "tiene "<< currentMinerals << endl;
             }
+            */
  
 
 
