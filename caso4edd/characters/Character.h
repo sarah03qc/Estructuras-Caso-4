@@ -17,11 +17,14 @@ class Character{
             int speed;
             IStrategy *characterStrategy;
             int currentState;
+            /*
+            creo que lo voy a quitar
             enum charStates{
                 puertaRaiz = 0,
                 tunel = 1,
                 camara = 2
             };
+            */
             
     public:
             Character(string pName, int pLoadingCapacity, int pSpeed){
@@ -29,7 +32,6 @@ class Character{
                 this->loadingCapacity = pLoadingCapacity;
                 this->speed = pSpeed;
                 this->currentMinerals = 0;
-                this->currentState = puertaRaiz;
 
             }
 
@@ -54,12 +56,11 @@ class Character{
             }
 
             void startMoving(){
-
+                //characterStrategy->strategyMove();
             }
             
 
             void mine(Camara *pCamara){
-                this->currentState = camara;
                 cout << "El " << name << "esta minando"<< endl;
                 // codigo para sacar el mineral de la camara
                 if(this->getLoadingCapacitys() - pCamara->getMinerales() >= 0) {
