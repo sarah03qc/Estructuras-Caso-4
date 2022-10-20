@@ -11,39 +11,45 @@ using namespace std;
 template <class T>
 class Node {
     private:
-        T *data;
+        int *data;
+        T *content;
         int height = 1;
         int balance;
         Node *left;
         Node *right;  
-        Node *parent;
     
     public:
         Node() {
-            data = NULL;
+            data = 0;
             left = NULL;
             right = NULL;   
-            parent = NULL;
             height = 1;
             balance = 0;
         }
 
-        Node(T *pData) {
+        Node(int *pData) {
             this->data = pData;
             left = NULL;
             right = NULL; 
-            parent = NULL; 
         }
 
-        T* getData() {
-            if(this == NULL) {
+        int* getData() {
+            if(this == 0) {
                 return NULL;
             }
             return data;
         }
 
-        void setData(T *pData) {
+        T* getContent() {
+            return content;
+        }
+
+        void setData(int *pData) {
             this->data = pData;
+        }
+
+        void setContent(T *pcontent) {
+            this->content = pcontent;
         }
 
         Node* getLeft() {
@@ -58,10 +64,6 @@ class Node {
                 return NULL;
             }
             return right;     
-        }
-
-        Node* getParent() {    
-            return parent;     
         }
 
         int getHeight() {
@@ -79,7 +81,6 @@ class Node {
         }
 
         void setLeft(Node<T> *pValue) {
-            //cout << "pvalue es " << *pValue->getData() << endl;
             this->left = pValue;
         }
 
@@ -94,10 +95,6 @@ class Node {
         void setBalance(int newb) {
             this->balance = newb;
         }
-
-        void setParent(Node<T> *pParent) {  
-            this->parent = pParent;      
-        } 
 };
 
 #endif

@@ -25,21 +25,10 @@ class AVLTree {
 
         Node<T>* rrRotac(Node<T> *upper) {
             Node<T> *temp;
-            if(upper->getParent() != NULL) {
-                Node<T> *parent = upper->getParent();
-                temp->setParent(parent);
-                upper->setParent(temp);
-
-                if(parent->getLeft() == upper) {
-                    parent->setLeft(temp);
-                } else {
-                    parent->setRight(temp);
-                }
-            }
+            
             temp = upper->getRight();
             if(temp->getLeft() != NULL) {
                 upper->setRight(temp->getLeft());
-                temp->getLeft()->setParent(upper);
             }
             else{
                 upper->setRight(NULL);
@@ -50,28 +39,17 @@ class AVLTree {
             temp->setHeight(maximo(temp->getLeft()->getHeight(), temp->getRight()->getHeight()) + 1);
 
             
-            cout<<"Right-Right Rotation";
+            cout<<"Right-Right Rotation" << endl;
             return temp;
         }
 
 
         Node<T>* llRotac(Node<T> *upper) {
             Node<T> *temp;
-            if(upper->getParent() != NULL) {
-                Node<T> *parent = upper->getParent();
-                temp->setParent(parent);
-                upper->setParent(temp);
-
-                if(parent->getLeft() == upper) {
-                    parent->setLeft(temp);
-                } else {
-                    parent->setRight(temp);
-                }
-            }
+            
             temp = upper->getLeft();
             if(temp->getRight() != NULL) {
                 upper->setLeft(temp->getRight());
-                temp->getRight()->setParent(upper);
             }
             else{
                 upper->setLeft(NULL);
@@ -81,7 +59,7 @@ class AVLTree {
             temp->setHeight(maximo(temp->getLeft()->getHeight(), temp->getRight()->getHeight()) + 1);
             upper->setHeight(maximo(upper->getLeft()->getHeight(), upper->getRight()->getHeight()) + 1);
 
-            cout<<"Left-Left Rotation";
+            cout<<"Left-Left Rotation" << endl;;
             return temp;
         }
 
@@ -89,7 +67,7 @@ class AVLTree {
             Node<T> *temp;
             temp = upper->getLeft();
             upper->setLeft(rrRotac(temp));
-            cout<<"Left-Right Rotation";
+            cout<<"Left-Right Rotation" << endl;;
             return this->llRotac(upper);
         }
 
@@ -97,17 +75,14 @@ class AVLTree {
             Node<T> *temp;
             temp = upper->getRight();
             upper->setRight(llRotac(temp));
-            cout<<"Right-Left Rotation";
+            cout<<"Right-Left Rotation" << endl;
             return this->rrRotac(upper);
         }
 
-        Node<T>* checkbalance(Node<T> *temp, T *pData) {
+        Node<T>* checkbalance(Node<T> *temp, int *pData) {
             int balanceFactor =  temp->getLeft()->getHeight() - temp->getRight()->getHeight();
             temp->setBalance(balanceFactor);
-            //el problema es que aveces temp->getRight() va a ser null, pero siendo null no se
-            //puede hacerle ->getData() porque da segmentationfault 
-            //y si le hago una condicion extra de que eso no sea null, simplemente no entra a la 
-            //condicion y se va a hacer la otra
+
             if(balanceFactor < -1) {
                 if(*pData > *temp->getRight()->getData()) {
                     temp = this->rrRotac(temp);
@@ -124,11 +99,10 @@ class AVLTree {
             return temp;
         }
 
-        Node<T>* add(Node<T> *currentt, T *pData) {
+        Node<T>* add(Node<T> *currentt, int *pData) {
             
             if(currentt == NULL) {
                 Node<T> *newNode = new Node<T>(pData);
-                cout << "root es " << root << endl;
                 if(root->getData() == NULL) {
                     root = newNode;
                 }
@@ -137,39 +111,16 @@ class AVLTree {
                 currentt->setLeft(add(currentt->getLeft(), pData));
                 currentt->setHeight(1 + maximo(currentt->getLeft()->getHeight(), currentt->getRight()->getHeight()));
                 currentt = this->checkbalance(currentt, pData);
+                root = currentt;
                 quantity++;
             } else if(*pData >= *currentt->getData()) {
                 currentt->setRight(add(currentt->getRight(), pData));
                 currentt->setHeight(1 + maximo(currentt->getLeft()->getHeight(), currentt->getRight()->getHeight()));
                 currentt = this->checkbalance(currentt, pData);
+                root = currentt;
                 quantity++;
             } return currentt;
         }
-            
-        
-
-                /*  version iterativa funcional guardada por si acaso
-                while(current != newNode) {
-                    currentlevel++;
-                    if(*newNode->getData() < *current->getData() && current->getLeft() != NULL) {
-                        current = current->getLeft();
-                        
-                    } else if(*newNode->getData() < *current->getData() && current->getLeft() == NULL) {
-                        current->setLeft(newNode);
-                 
-                        current = newNode;
-                        
-                    } else if(*newNode->getData() > *current->getData() && current->getRight() != NULL) {
-                        current = current->getRight();
-                        
-                    } else if(*newNode->getData() > *current->getData() && current->getRight() == NULL) {
-                        current->setRight(newNode);
-             
-                        current= newNode;
-                    }
-                }
-                */
-
 
         Node<T>* getRoot() {
             return this->root;
@@ -183,6 +134,40 @@ class AVLTree {
             return !quantity;
         }
 
+        void inorder(Node<T> *temp) {
+            //recibe root de param
+            if(temp != NULL) {
+                inorder(temp->getLeft());
+                cout << "Elemento: " << *temp->getData() << endl;
+                inorder(temp->getRight());
+            }
+        }
+
+
+        void destroy(Node<T> *toDestroy) {
+            if(toDestroy != NULL) {
+                destroy(toDestroy->getLeft());
+                destroy(toDestroy->getRight());
+                cout << "Destruyendo " << *toDestroy->getData() << endl;
+                delete toDestroy;
+            }
+        }
+
+        Node<T>* find(Node<T> *temp, int *searching) {
+            //recibe root de param, y los datos del nodo que se busca
+            Node<T>* found = NULL; 
+            if(temp != NULL) {
+                find(temp->getLeft(), searching);
+                
+                if(*temp->getData() == *searching) {
+                    cout << "Elemento ha sido encontrado: " << *temp->getData() << endl;
+                    found = temp;
+                    return found;
+                }
+                find(temp->getRight(), searching);
+            }
+            //return found;
+        }
 };
 
 #endif
