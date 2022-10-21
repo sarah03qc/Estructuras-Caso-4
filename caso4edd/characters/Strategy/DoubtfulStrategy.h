@@ -3,6 +3,9 @@
 #include "../Character.h"
 #include <iostream>
 #include <queue>
+#include "StrategyMethods.h"
+
+
 
 /*
 doubtful strategy: conocido como estrategia del personaje indeciso, todo lo piensa un ramdom por el
@@ -11,20 +14,15 @@ luego decide si minarla o no, mina una cantidad aleatoria entre su capacidad y l
 */
 using namespace std;
 
-class DoubtfulStrategy : public IStrategy{
+class DoubtfulStrategy : public IStrategy, public StrategyMethods{
     private:
         enum path{
             left = 0,
             right = 1
         };
 
-    public:
-        DoubtfulStrategy(){
-
-        }
-        
+    public:        
         void strategyMove(List<Door> *pListaDoors, Character *pCharacter){
-            moveLoop:
             for (int currentDoor = 0; currentDoor < pListaDoors->getSize(); ++currentDoor){
                 if (pListaDoors->find(currentDoor)->hasMine()){
                     cout << pCharacter->getName() << " entró a una puerta" << endl;
@@ -45,7 +43,7 @@ class DoubtfulStrategy : public IStrategy{
                             cout << "El " << pCharacter->getName() << " se quedo quieto en la camara"<< endl;
                         }
                         */
-                        walkedPath->push(currentCamara->getContent());
+                        getWalkedPath()->push(currentCamara->getContent());
                         travel(pCharacter, currentCamara->getContent()->getDistance());
                         // el personaje decide si minar o no la camara
                         if(decideMine() == true){
@@ -62,34 +60,6 @@ class DoubtfulStrategy : public IStrategy{
                     }
                 }
             }                    
-        }
-            
-        void returnMinerals(Character *pCharacter, Door *pEnteredDoor, List<Door> *pListaDoors){
-            int distance = 0;
-            // se calcula la distancia para devolverse a la puerta
-            while(walkedPath->size() > 0){
-                distance += walkedPath->front()->getDistance();
-                walkedPath->pop();
-            }
-            travel(pCharacter, distance);
-            cout << "El " << pCharacter->getName() << " devolvio" << pCharacter->getCurrentMinerals() << endl;
-            pEnteredDoor->setMinerals(pEnteredDoor->getMinerals() + pCharacter->getCurrentMinerals());
-            pCharacter->resetCurrentMinerals();
-        }
-
-        void checkCurrentMinerals(Character *pCharacter, Door *pEnteredDoor, List<Door> *pListaDoors){
-            if(pCharacter->getCurrentMinerals() == pCharacter->getLoadingCapacitys()){
-                returnMinerals(pCharacter, pEnteredDoor, pListaDoors);
-            }
-        }
-
-        void travel(Character *pCharacter, int distance){
-            clock_t now = clock(); 
-            float time = distance / pCharacter->getSpeed();     // se calcula lo que va a durar viajando
-            cout << "El " << pCharacter->getName() << " esta caminando" << endl;
-            while (clock() - now < time * CLOCKS_PER_SEC){
-            }
-            cout << "El " << pCharacter->getName() << " termino de caminar" << endl;
         }
 
         void strategyMine(Camara *pCamara, Character *pCharacter){

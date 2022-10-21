@@ -1,20 +1,18 @@
 #include "IStrategy.h"
+#include "../Character.h"
+#include "StrategyMethods.h"
+
+
 using namespace std;
 
-class SelflessStrategy : public IStrategy{
+class SelflessStrategy : public IStrategy, public StrategyMethods{
     public: 
 
-        void strategyMove(List<Door> *pListaDoors){
-            /*
-            */
-        }
-        void strategyMine(){
+        void strategyMove(List<Door> *pListaDoors, Character *pCharacter){
 
         }
-        void returnMinerals(){
 
-        }
-        void setId(){
+        void strategyMine(Camara *pCamara){
 
         }
 
