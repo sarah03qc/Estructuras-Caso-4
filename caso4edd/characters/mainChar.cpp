@@ -2,6 +2,7 @@
 #include <thread>
 #include <ctime>
 #include<cstdio>
+#include "Strategy/DoubtfulStrategy.h"
 #include "IStrategy.h"
 
 using namespace std;
@@ -37,33 +38,33 @@ enum strategies{
 
 void characterOneSimulation(){
     // playerCharacters[0]->empezar estrategia
-    playerCharacters[0]->showCurrentState();
+    //playerCharacters[0]->showCurrentState();
 
 }
 void characterTwoSimulation(){
     // playerCharacters[1]->empezar estrategia
-    playerCharacters[1]->showCurrentState();
+    //playerCharacters[1]->showCurrentState();
 
 }
 void characterThreeSimulation(){
     // playerCharacters[2]->empezar estrategia
-    playerCharacters[2]->showCurrentState();
+    //playerCharacters[2]->showCurrentState();
 }
 
 void loadStrategies(){
     for (int index = 0; index < MAX_CHARACTERS; ++index){
-        //IStrategy *strategy;
+        IStrategy *strategy;
         if(selectedStrategies[index] = doubtfulStrategy){
-            IStrategy *DoubtfulStrategy();
-            playerCharacters[index]->setCharacterStrategy(DoubtfulStrategy());
+            strategy = new DoubtfulStrategy();
+            playerCharacters[index]->setCharacterStrategy(strategy);
         }
         else if(selectedStrategies[index] = carefulStrategy){
-            IStrategy *CarefulStrategy();
-            playerCharacters[index]->setCharacterStrategy(CarefulStrategy());
+            strategy = new CarefulStrategy();
+            playerCharacters[index]->setCharacterStrategy(strategy);
         }
         else{
-            IStrategy *SelflessStrategy();
-            playerCharacters[index]->setCharacterStrategy(SelflessStrategy());
+            strategy = new SelflessStrategy();
+            playerCharacters[index]->setCharacterStrategy(strategy);
         }
     }
 }

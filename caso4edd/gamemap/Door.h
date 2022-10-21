@@ -18,6 +18,8 @@ class Door {
         int minePosibilities = 0;
         int random;
         Mina *mine = NULL;
+        int amountMinerals = 0;
+
 
     public:
         Door() {
@@ -92,6 +94,14 @@ class Door {
 
         Mina* getMine(){
             return mine;
+        }
+        
+        void setMinerals(int pAmount){
+            this->amountMinerals = pAmount;
+        }
+
+        int getMinerals(){
+            return this->amountMinerals;
         }
 };
 

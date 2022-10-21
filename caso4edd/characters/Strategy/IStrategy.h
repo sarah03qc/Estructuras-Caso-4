@@ -1,5 +1,6 @@
 #include <iostream>
 #include "Door.h"
+#include <queue>
 
 /*
 doubtful strategy: el personaje abre cada puerta y hasta que se encuentre un tunel y mina una cantidad aleatoria 
@@ -14,9 +15,14 @@ otro personaje en la misma red.
 
 class IStrategy{
         public: 
-                virtual void strategyMove(List<Door> *pListaDoors) = 0;
-                virtual void travel() = 0;
+                virtual void strategyMove(List<Door> *pListaDoors, Character *pCharacter) = 0;
+                virtual void travel(Character *pCharacter, int distance) = 0;
                 virtual void strategyMine(Camara *pCamara) = 0;
+                virtual void returnMinerals(Character *pCharacter) = 0;
+                virtual void checkCurrentMinerals(Character *pCharacter) = 0;
+
+        protected:
+                queue<Camara*> *walkedPath = new queue<Camara*>();
 
 };
 

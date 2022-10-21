@@ -17,7 +17,6 @@ class Character{
             int loadingCapacity;
             int speed;
             IStrategy *characterStrategy;
-            int currentState;
             /*
             creo que lo voy a quitar
             enum charStates{
@@ -40,6 +39,14 @@ class Character{
                 return this->name;
             }
 
+            void resetCurrentMinerals(){
+                this->currentMinerals = 0;
+            }
+
+            void setCurrentMinerals(int pAmount){
+                this->currentMinerals = pAmount;
+            }
+
             int getCurrentMinerals(){
                 return this->currentMinerals;
             }
@@ -55,35 +62,5 @@ class Character{
             void setCharacterStrategy(IStrategy *chosedStrategy){
                 this->characterStrategy = chosedStrategy;
             }
-
-            void startMoving(){
-                //characterStrategy->strategyMove();
-            }
-            
-            /*
-            void mine(Camara *pCamara){
-                cout << "El " << name << "esta minando"<< endl;
-                // codigo para sacar el mineral de la camara
-                if(this->getLoadingCapacitys() - pCamara->getMinerales() >= 0) {
-                //significa que segun su capacidad de carga, pueden tomar todo lo que hay en la camara
-                    this->currentMinerals += pCamara->getMinerales();
-                    pCamara->setMinerales(0);
-                } else {
-                    //se toma lo que se puede
-                    this->currentMinerals += this->getLoadingCapacitys();
-                    pCamara->setMinerales(pCamara->getMinerales() - this->getLoadingCapacitys());
-                }
-                cout << "El " << this->name << "tiene "<< currentMinerals << endl;
-            }
-            */
- 
-
-
-
-            void showCurrentState(){
-                cout << "El " << name << " esta en " << this->charStates[currentState] << endl; 
-            }
-         
-
 };
 #endif
