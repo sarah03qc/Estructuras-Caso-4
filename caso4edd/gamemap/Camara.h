@@ -39,7 +39,7 @@ class Camara {
             return this->distanceUpperChamber;
         }
 
-        int setMinerales(int pCantidad) {
+        void setMinerales(int pCantidad) {
             this->minerales = pCantidad;
         }
 

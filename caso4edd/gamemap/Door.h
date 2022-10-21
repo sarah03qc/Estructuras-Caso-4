@@ -17,7 +17,7 @@ class Door {
         bool tieneMina = false;
         int minePosibilities = 0;
         int random;
-        Mina *mine;
+        Mina *mine = NULL;
 
     public:
         Door() {
@@ -31,6 +31,9 @@ class Door {
             minePosibilities = rand() % (100 - 0) + 0;
             if(minePosibilities <= 66) {
                 tieneMina = true;
+            }
+            if(tieneMina == true) {
+                mine = new Mina();
             }
             //aca se van a poner a crear la mina
         }
@@ -87,7 +90,7 @@ class Door {
             return tieneMina;
         }
 
-        Mina *getMine(){
+        Mina* getMine(){
             return mine;
         }
 };

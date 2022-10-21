@@ -18,7 +18,7 @@ class Mina {
 
     public:
         Mina() {
-            cantidadCamaras = rand() % (72 - 9) + 9;
+            cantidadCamaras = rand() % (30 - 3) + 3;
             Node<Camara> *nodo = NULL;
             cout << "Cantidad generada de camaras es: " << cantidadCamaras << endl;
             for(int i = 0; i < cantidadCamaras; i++) {
@@ -36,10 +36,10 @@ class Mina {
                 cout << "agregando nodo al arbol" << endl;
                 Node<Camara> *found = estaMina->find(nodo, new int(potencia));     //se busca para asignarle "contenido", que es la camara
                 found->setContent(chamber);
-                cout << "maybe minerals " << found->getContent()->getMinerales() << endl;
+                cout << "minerals " << found->getContent()->getMinerales() << endl;
                 cout << "Camara set " << i << endl;
-
             }
+            nodo->getContent()->setMinerales(0); //ponemos los minerales de la root en cero, porque no debe tener
         }
         AVLTree<Camara> *getEstaMina(){
             return this->estaMina;

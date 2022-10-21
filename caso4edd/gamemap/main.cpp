@@ -11,7 +11,7 @@ using namespace std;
 int main() {
 
     srand((unsigned) time(NULL));
-    Mina *mine = new Mina();
+    Door* puerta = new Door();
     
     
     /*  //prueba de generar puertas y sus conexiones, funciona

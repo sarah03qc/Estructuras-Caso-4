@@ -12,6 +12,7 @@ class AVLTree {
     private:
         Node<T> *root;
         int quantity;
+        int counterForFind = 0;
 
     public:
         AVLTree() {
@@ -39,7 +40,7 @@ class AVLTree {
             temp->setHeight(maximo(temp->getLeft()->getHeight(), temp->getRight()->getHeight()) + 1);
 
             
-            cout<<"Right-Right Rotation" << endl;
+            //cout<<"Right-Right Rotation" << endl;
             return temp;
         }
 
@@ -59,7 +60,7 @@ class AVLTree {
             temp->setHeight(maximo(temp->getLeft()->getHeight(), temp->getRight()->getHeight()) + 1);
             upper->setHeight(maximo(upper->getLeft()->getHeight(), upper->getRight()->getHeight()) + 1);
 
-            cout<<"Left-Left Rotation" << endl;;
+            //cout<<"Left-Left Rotation" << endl;;
             return temp;
         }
 
@@ -67,7 +68,7 @@ class AVLTree {
             Node<T> *temp;
             temp = upper->getLeft();
             upper->setLeft(rrRotac(temp));
-            cout<<"Left-Right Rotation" << endl;;
+            //cout<<"Left-Right Rotation" << endl;;
             return this->llRotac(upper);
         }
 
@@ -75,7 +76,7 @@ class AVLTree {
             Node<T> *temp;
             temp = upper->getRight();
             upper->setRight(llRotac(temp));
-            cout<<"Right-Left Rotation" << endl;
+            //cout<<"Right-Left Rotation" << endl;
             return this->rrRotac(upper);
         }
 
@@ -155,19 +156,17 @@ class AVLTree {
 
         Node<T>* find(Node<T> *temp, int *searching) {
             //recibe root de param, y los datos del nodo que se busca
-            Node<T>* found = NULL; 
             if(temp != NULL) {
                 find(temp->getLeft(), searching);
-                
+                counterForFind++;
                 if(*temp->getData() == *searching) {
                     cout << "Elemento ha sido encontrado: " << *temp->getData() << endl;
-                    found = temp;
-                    return found;
+                    return temp;
                 }
                 find(temp->getRight(), searching);
             }
-            //return found;
         }
+        
 };
 
 #endif
