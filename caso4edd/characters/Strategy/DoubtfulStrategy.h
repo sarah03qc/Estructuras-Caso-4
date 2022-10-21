@@ -5,8 +5,9 @@
 #include <queue>
 
 /*
-doubtful strategy: el personaje abre cada puerta y hasta que se encuentre un tunel y decide aleatoriammente cual entrar y mina una cantidad aleatoria 
-entre su capacidad y la cantidad que hay 
+doubtful strategy: conocido como estrategia del personaje indeciso, todo lo piensa un ramdom por el
+el personaje abre cada puerta y hasta que se encuentre un tunel y decide aleatoriammente cual entrar y 
+luego decide si minarla o no, mina una cantidad aleatoria entre su capacidad y la cantidad que hay 
 */
 using namespace std;
 
@@ -37,7 +38,7 @@ class DoubtfulStrategy : public IStrategy{
                     Node<Camara> *currentCamara;
                     for (int bifurcacion = 0; bifurcaciones->getSize(); ++bifurcacion){
                         // antes de decidir si caminar revisa que no sobrepase su capacidad de carga
-
+                        checkCurrentMinerals(pCharacter, enteredDoor, pListaDoors);
                         currentCamara = decidePath(camaraRaiz);    // el personaje decide
                         /*
                         if(currentCamara == NULL){
@@ -49,15 +50,20 @@ class DoubtfulStrategy : public IStrategy{
                         // el personaje decide si minar o no la camara
                         if(decideMine() == true){
                             strategyMine(currentCamara->getContent(), pCharacter);
-                            //verificar que la camara tenga cero
                             // despues de minar el personaje revisa que no sobrepase su capacidad de carga
+                            checkCurrentMinerals(pCharacter, enteredDoor, pListaDoors);
+                            //verificar que la camara tenga cero
+                            if(currentCamara->getContent()->getMinerales() == 0){
+                                // se busca el nodo en el arbol
+                                Node<Camara> *camaraToDelete = bifurcaciones->find(camaraRaiz, currentCamara->getData());
+                                bifurcaciones->destroy(camaraToDelete);
+                            }
                         }
                     }
                 }
             }                    
         }
             
-        
         void returnMinerals(Character *pCharacter, Door *pEnteredDoor, List<Door> *pListaDoors){
             int distance = 0;
             // se calcula la distancia para devolverse a la puerta
