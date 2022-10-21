@@ -12,9 +12,9 @@ using namespace std;
 
 class Door {
     private: 
-        int numDoorsConect = 0;
-        List<Door> *listadoors;
-        bool tieneMina = false;
+        int numDoorsConect = 0;  //a cuantas puertas se conecta this
+        List<Door> *listadoors;  //lista de las conexiones que tiene
+        bool tieneMina = false;  
         int minePosibilities = 0;
         int random;
         Mina *mine = NULL;
@@ -24,7 +24,6 @@ class Door {
     public:
         Door() {
             listadoors = new List<Door>();
-            
             this->generarMinaPosibilidad();
         }
 
@@ -35,12 +34,12 @@ class Door {
                 tieneMina = true;
             }
             if(tieneMina == true) {
-                mine = new Mina();
+                mine = new Mina();   //si se genero que tiene mina se crea, sino es NULL
             }
-            //aca se van a poner a crear la mina
         }
 
         int generarConexiones(int nCreando) {
+            //recursiva que genera nCreando cantidad de puertas conectadas a la inicial
             if(nCreando == 0) {
                 return 0;
             }
@@ -89,11 +88,11 @@ class Door {
         }
 
         bool hasMine() {
-            return tieneMina;
+            return tieneMina; //para ver si tiene on no 
         }
 
         Mina* getMine(){
-            return mine;
+            return mine;   //si tiene retorna una mina ya con todo (porque se genera en el constructor de mina), y si no tiene retorna NULL
         }
         
         void setMinerals(int pAmount){

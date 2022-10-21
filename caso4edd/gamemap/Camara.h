@@ -42,7 +42,6 @@ class Camara {
         void setMinerales(int pCantidad) {
             this->minerales = pCantidad;
         }
-
 };
 
 #endif

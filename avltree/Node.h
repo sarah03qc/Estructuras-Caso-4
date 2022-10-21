@@ -11,9 +11,9 @@ using namespace std;
 template <class T>
 class Node {
     private:
-        int *data;
-        T *content;
-        int height = 1;
+        int *data;  //es int porque ya sabemos en este caso que se ordena por critero de potencial de minado
+        T *content; //esto es generico porque es para almacenar la camara, y tener ese acceso a ella
+        int height = 1;  //aca tomamos que cada nodo tiene inicialmente 1
         int balance;
         Node *left;
         Node *right;  

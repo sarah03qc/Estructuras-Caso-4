@@ -9,9 +9,12 @@ using namespace std;
 
 
 int main() {
+    //este main es para probar todo lo que tiene que ver con el mapa fisico
 
-    srand((unsigned) time(NULL));
-    Door* puerta = new Door();
+    srand((unsigned) time(NULL)); //se tiene que hacer fuera de todo para que solo se haga una vez, sino dan los mismos numeros random
+    Door* puerta = new Door();   //esto crea la puerta inicial
+    //las conexiones a esta se generan con un metodo y se da n
+
     
     
     /*  //prueba de generar puertas y sus conexiones, funciona

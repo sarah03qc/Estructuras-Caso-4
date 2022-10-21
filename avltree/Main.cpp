@@ -10,6 +10,7 @@ using namespace std;
 
 
 int main() {
+    //este main fue para probar la funcionalidad del arbol avl 
 
     AVLTree<string>* arbol = new AVLTree<string>();
     Node<string>* nodo1 = NULL;

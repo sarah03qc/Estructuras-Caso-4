@@ -18,10 +18,11 @@ class Mina {
 
     public:
         Mina() {
-            cantidadCamaras = rand() % (30 - 3) + 3;
+            cantidadCamaras = rand() % (30 - 3) + 3;  //un rango del numero de camaras, pero se puede cambiar
             Node<Camara> *nodo = NULL;
             cout << "Cantidad generada de camaras es: " << cantidadCamaras << endl;
             for(int i = 0; i < cantidadCamaras; i++) {
+                //se va creando la cantidad generada por el random
                 Camara *chamber = new Camara();
                 chamber->generateMinerales();
                 chamber->generateDistance();
@@ -43,8 +44,7 @@ class Mina {
         }
         AVLTree<Camara> *getEstaMina(){
             return this->estaMina;
-        }
-     
+        } 
 };
 
 #endif

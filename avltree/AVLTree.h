@@ -144,8 +144,8 @@ class AVLTree {
             }
         }
 
-
         void destroy(Node<T> *toDestroy) {
+            //aca no tenemos un delete normal, le pusimos destroy porque tambien destruye todos los hijos
             if(toDestroy != NULL) {
                 destroy(toDestroy->getLeft());
                 destroy(toDestroy->getRight());
@@ -156,6 +156,10 @@ class AVLTree {
 
         Node<T>* find(Node<T> *temp, int *searching) {
             //recibe root de param, y los datos del nodo que se busca
+
+            //la situacion de esta es que da un warning por el return que solo esta en caso de que encuentra el elemento
+            //de momento no afecta si se corre por la terminal, pero estamos viendo como lo manejamos
+            //ya que es recursiva
             if(temp != NULL) {
                 find(temp->getLeft(), searching);
                 counterForFind++;
@@ -166,7 +170,6 @@ class AVLTree {
                 find(temp->getRight(), searching);
             }
         }
-        
 };
 
 #endif
