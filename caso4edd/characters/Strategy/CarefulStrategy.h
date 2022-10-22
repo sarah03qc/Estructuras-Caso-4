@@ -1,18 +1,11 @@
-#include "IStrategy.h"
+#include "Strategy.h"
 #include "../Character.h"
-#include "StrategyMethods.h"
 
 using namespace std;
 
-class CarefulStrategy : public IStrategy, public StrategyMethods{
+class CarefulStrategy : public Strategy{
     public: 
 
-        void strategyMove(List<Door> *pListaDoors, Character *pCharacter){
 
-        }
-
-        void strategyMine(Camara *pCamara){
-
-        }
 
 };

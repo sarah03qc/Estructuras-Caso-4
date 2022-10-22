@@ -1,30 +1,37 @@
-#include <iostream>
-#include <string>
-#include "../gamemap/Camara.h"
-
-
-using namespace std;
 #ifndef CHARACTER
 #define CHARACTER 1
 
+#include <iostream>
+#include <string>
+#include "../gamemap/Camara.h"
+#include "../gamemap/List.h"
+#include "../gamemap/Door.h"
+#include "../patron/Observer.h"
+#include "Strategy/Strategy.h"
+
+using namespace std;
 
 
-class Character{
+class Character : public Observer{
     private:
-            string charStates[3] = {"puerta raiz", "tunel", "camara"};
+            string charStates[7] = {" en puerta raiz", "en puerta", "en tunel", "en camara", "decidiendo", "minando", "caminando"};
             string name;
             int currentMinerals;
             int loadingCapacity;
             int speed;
-            IStrategy *characterStrategy;
-            /*
-            creo que lo voy a quitar
+            int currentState;
+            Strategy *characterStrategy = new Strategy();
             enum charStates{
-                puertaRaiz = 0,
-                tunel = 1,
-                camara = 2
-            };
-            */
+                enpuertaRaiz = 0,
+                puerta = 1,
+                tunel = 2,
+                camara = 3,
+                decidiendo = 4,
+                minando = 5,
+                caminando = 6
+            }; 
+
+  
             
     public:
             Character(string pName, int pLoadingCapacity, int pSpeed){
@@ -32,7 +39,51 @@ class Character{
                 this->loadingCapacity = pLoadingCapacity;
                 this->speed = pSpeed;
                 this->currentMinerals = 0;
+                characterStrategy->setCharacterCapacity(this->loadingCapacity);
 
+            }
+
+            void play(List<Door> *pListaDoors){
+                cout << "play" << endl;
+                this->characterStrategy->move(pListaDoors, this->name, &currentMinerals);
+            }
+
+            void showCurrentState(){
+                cout << "El " << this->name << " esta " << charStates[this->currentState] << endl;
+                
+            }
+
+            void updateState(int pState) override{
+                this->currentState = pState;
+                showCurrentState();
+            }
+
+            void travel(int distance) override{
+                clock_t now = clock(); 
+                float time = distance / this->speed;     // se calcula lo que va a durar viajando
+                updateState(caminando);
+                while (clock() - now < time * CLOCKS_PER_SEC){
+                }
+                updateState(enpuertaRaiz);
+            }
+
+            void returnMinerals(queue<Camara*> *pWalkedPath, Door *pEnteredDoor, List<Door> *pListaDoors){
+                int distance = 0;
+                // se calcula la distancia para devolverse a la puerta
+                while(pWalkedPath->size() > 0){
+                    distance += pWalkedPath->front()->getDistance();
+                    pWalkedPath->pop();
+                }
+                travel(distance);
+                cout << "El " << this->name << " devolvio" << this->currentMinerals << endl;
+                pEnteredDoor->setMinerals(pEnteredDoor->getMinerals() + this->currentMinerals);
+                this->resetCurrentMinerals();
+            }
+
+            void checkCurrentMinerals(queue<Camara*> *pWalkedPath , Door *pEnteredDoor, List<Door> *pListaDoors) override{
+                if(this->getCurrentMinerals() == this->getLoadingCapacitys()){
+                    returnMinerals(pWalkedPath, pEnteredDoor, pListaDoors);
+                }
             }
 
             string getName(){
@@ -43,8 +94,8 @@ class Character{
                 this->currentMinerals = 0;
             }
 
-            void setCurrentMinerals(int pAmount){
-                this->currentMinerals = pAmount;
+            void setCurrentMinerals(int pAmount) override{
+                this->currentMinerals += pAmount;
             }
 
             int getCurrentMinerals(){
@@ -59,7 +110,7 @@ class Character{
                 return this->speed;
             }
 
-            void setCharacterStrategy(IStrategy *chosedStrategy){
+            void setCharacterStrategy(Strategy *chosedStrategy){
                 this->characterStrategy = chosedStrategy;
             }
 };

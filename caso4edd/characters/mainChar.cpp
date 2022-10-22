@@ -3,7 +3,7 @@
 #include <ctime>
 #include<cstdio>
 #include "Strategy/DoubtfulStrategy.h"
-#include "IStrategy.h"
+#include "Strategy/Strategy.h"
 
 using namespace std;
 
@@ -17,12 +17,14 @@ using namespace std;
 #define TOPO_SPEED 7
 #define TOPO_LOAD_CAPACITY 15
 
-struct timespec pausa = {10,0};     // solo para probar algo
+//struct timespec pausa = {10,0};     // solo para probar algo
 
 int selectedCharacters[MAX_CHARACTERS];
 int selectedStrategies[MAX_CHARACTERS];
 Character *playerCharacters[MAX_CHARACTERS];
-IStrategy *strategyList [MAX_CHARACTERS];
+Strategy *strategyList [MAX_CHARACTERS];
+
+List<Door> *pListaDoors;
 
 
 enum characters{
@@ -36,34 +38,47 @@ enum strategies{
     selflessStrategy = 3,
 };
 
-void characterOneSimulation(){
-    // playerCharacters[0]->empezar estrategia
-    //playerCharacters[0]->showCurrentState();
+enum amountCharacters{
+    personajeUno = 0,
+    personajeDos = 1,
+    personajeTres = 2
+};
+
+/*
+void characterOneSimulation(List<Door> *pListaDoors){
+    playerCharacters[personajeUno]->play(pListaDoors);
 
 }
-void characterTwoSimulation(){
-    // playerCharacters[1]->empezar estrategia
-    //playerCharacters[1]->showCurrentState();
+void characterTwoSimulation(List<Door> *pListaDoors){
+    playerCharacters[personajeDos]->play(pListaDoors);
 
 }
-void characterThreeSimulation(){
-    // playerCharacters[2]->empezar estrategia
-    //playerCharacters[2]->showCurrentState();
+void characterThreeSimulation(List<Door> *pListaDoors){
+    playerCharacters[personajeTres]->play(pListaDoors);
+}
+*/
+
+void charactersSimulation(){
+    cout << "inicia" << endl;
+    playerCharacters[personajeUno]->play(pListaDoors);
+    playerCharacters[personajeDos]->play(pListaDoors);
+    playerCharacters[personajeTres]->play(pListaDoors);
 }
 
 void loadStrategies(){
     for (int index = 0; index < MAX_CHARACTERS; ++index){
-        IStrategy *strategy;
+        Strategy *strategy;
         if(selectedStrategies[index] = doubtfulStrategy){
             strategy = new DoubtfulStrategy();
+            strategy->registerObserver(playerCharacters[index]);
             playerCharacters[index]->setCharacterStrategy(strategy);
         }
         else if(selectedStrategies[index] = carefulStrategy){
-            strategy = new CarefulStrategy();
+            //strategy = new CarefulStrategy();
             playerCharacters[index]->setCharacterStrategy(strategy);
         }
         else{
-            strategy = new SelflessStrategy();
+            //strategy = new SelflessStrategy();
             playerCharacters[index]->setCharacterStrategy(strategy);
         }
     }
@@ -87,7 +102,14 @@ void loadCharacters(){
 
 }
 
+void createDoor(){
+    cout << "aqui" << endl;
+    Door* puerta = new Door();
+    
+}
+
 void askPlayer(){
+    /* 
         cout << "\n-Seleccione sus personajes y estrategias-" << endl;
         cout << "\nPersonajes:                   | Estrategias" << endl;
         cout << "   Explorador (1)             |    Doubtful Strategy   (1)" << endl;
@@ -106,6 +128,15 @@ void askPlayer(){
         cin >> selectedCharacters[2];
         cout << "\nEstrategia del personaje 3: ";
         cin >> selectedStrategies[2];
+        */
+       selectedCharacters[0] = 1;
+       selectedStrategies[0] = 1;
+       selectedCharacters[1] = 1;
+       selectedStrategies[1] = 1;
+       selectedCharacters[2] = 1;
+       selectedStrategies[2] = 1;
+
+
         loadCharacters();
         loadStrategies();
  
@@ -118,15 +149,12 @@ void gameSimulation(){
     cout << "\nHora de inicio de la partida: " << ctime(&startTime) << endl;
     clock_t now = clock();      //para marcar la hora
     askPlayer();
-    while(clock() - now < GAME_DURATION * CLOCKS_PER_SEC){
-        thread charOneThread(characterOneSimulation);
-        thread charTwoThread(characterTwoSimulation);
-        thread charThreeThread(characterThreeSimulation);
-        charOneThread.join();
-        charTwoThread.join();
-        charThreeThread.join();
-        pthread_delay_np(&pausa);
-    }
+    createDoor();
+    thread charactersThread(charactersSimulation);
+    charactersThread.join();
+    //while(clock() - now < GAME_DURATION * CLOCKS_PER_SEC){
+    //}
+
     time_t final = time(NULL);
     cout << "Hora de finalizacion de la partida: " << ctime(&final) << endl;
 }
@@ -137,6 +165,7 @@ int main(){
     RECORDAR: cuando utilizamos rand hay que inicializar srand una vez al inicio del programa
     para que rand no genere los mismos numeros todas las veces!!!!
     */
+    
     thread gameThread(gameSimulation);
     gameThread.join();
 
