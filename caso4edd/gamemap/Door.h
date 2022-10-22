@@ -35,11 +35,14 @@ class Door {
             }
             if(tieneMina == true) {
                 mine = new Mina();   //si se genero que tiene mina se crea, sino es NULL
+                cout << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" << endl;
             }
         }
 
         int generarConexiones(int nCreando) {
             //recursiva que genera nCreando cantidad de puertas conectadas a la inicial
+            cout << "WHAT" << endl;
+            cout << nCreando << endl;
             if(nCreando == 0) {
                 return 0;
             }
@@ -52,7 +55,9 @@ class Door {
                         if(listadoors->find(i)->getConectionsNum() > 1 && listadoors->find(i)->getConectionsNum() < 4) {
                             //porque si la que falta es una, no se puede agregar a una puerta sin conexiones
                             //ya que el minimo es dos, y tampoco agregarse a una de 4 conexiones, porque ese es el max
+                            cout << "Puerta creada" << endl;
                             Door *newDoor = new Door();
+                            cout << "Tiene mina: " << newDoor->hasMine() << endl;
                             listadoors->find(i)->addDoorToDoor(newDoor);
                         }
                     }

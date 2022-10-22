@@ -4,23 +4,21 @@
 #include "Door.h"
 #include "Mina.h"
 #include "Camara.h"
+#include "GameMap.h"
 
 using namespace std;
 
 
 int main() {
     //este main es para probar todo lo que tiene que ver con el mapa fisico
-
-    srand((unsigned) time(NULL)); //se tiene que hacer fuera de todo para que solo se haga una vez, sino dan los mismos numeros random
-    Door* puerta = new Door();   //esto crea la puerta inicial
-    //las conexiones a esta se generan con un metodo y se da n
-
+    srand((unsigned) time(NULL));
+    GameMap* juegomapa = new GameMap(10);  
     
-    
-    /*  //prueba de generar puertas y sus conexiones, funciona
+      //prueba de generar puertas y sus conexiones, funciona
+    /*
     Door* puerta = new Door();
     
-    cout << "Faltan: " << puerta->generarConexiones(10) << endl;
+    cout << "Faltan: " << puerta->generarConexiones(7) << endl;
     cout << "Puerta principal tiene mina: " << puerta->hasMine() << endl;
     cout << "Se generaron: " << puerta->getConectionsNum() << " conexiones a la puerta inicial" << endl;
 
