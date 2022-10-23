@@ -38,7 +38,8 @@ class Mina {
                 cout << "minerals " << found->getContent()->getMinerales() << endl;
                 cout << "Camara set " << i << endl;
             }
-            nodo->getContent()->setMinerales(0); //ponemos los minerales de la root en cero, porque no debe tener
+            //estaMina->getRoot()->getContent()->setMinerales(0);
+            //nodo->getContent()->setMinerales(0); //ponemos los minerales de la root en cero, porque no debe tener
         }
         AVLTree<Camara> *getEstaMina(){
             return this->estaMina;
