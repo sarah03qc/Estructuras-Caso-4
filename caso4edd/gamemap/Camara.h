@@ -13,8 +13,6 @@ class Camara {
         int distanceUpperChamber = 0;
         int potencialMinado = 0;
 
-    public:
-
         void generateMinerales() {
             minerales = rand() % (20 - 1) + 1;
             cout << "Los minerales generados son: " << minerales << endl;
@@ -25,7 +23,11 @@ class Camara {
             cout << "La distancia generada desde la camara superior es: " << distanceUpperChamber << endl;
         }
 
+    public:
+
         int calcularPotencial() {
+            this->generateMinerales();
+            this->generateDistance();
             potencialMinado = minerales * distanceUpperChamber;
             cout << "El potencial de minado es: " << potencialMinado << endl; 
             return potencialMinado;
@@ -43,5 +45,4 @@ class Camara {
             this->minerales = pCantidad;
         }
 };
-
 #endif

@@ -149,7 +149,7 @@ class AVLTree {
             if(toDestroy != NULL) {
                 destroy(toDestroy->getLeft());
                 destroy(toDestroy->getRight());
-                cout << "Destruyendo " << *toDestroy->getData() << endl;
+                //cout << "Destruyendo " << *toDestroy->getData() << endl;
                 delete toDestroy;
             }
         }
@@ -164,7 +164,7 @@ class AVLTree {
                 find(temp->getLeft(), searching);
                 counterForFind++;
                 if(*temp->getData() == *searching) {
-                    cout << "Elemento ha sido encontrado: " << *temp->getData() << endl;
+                    //cout << "Elemento ha sido encontrado: " << *temp->getData() << endl;
                     return temp;
                 }
                 find(temp->getRight(), searching);
