@@ -18,7 +18,6 @@ class GameMap {
     public:
         GameMap(int nDoors) {
             puerta = new Door(); 
-            cout << "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" << endl;
             puerta->generarConexiones(nDoors);  //con crear esto todo se debe generar
         }    
 

@@ -35,14 +35,11 @@ class Door {
             }
             if(tieneMina == true) {
                 mine = new Mina();   //si se genero que tiene mina se crea, sino es NULL
-                cout << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" << endl;
             }
         }
 
         int generarConexiones(int nCreando) {
             //recursiva que genera nCreando cantidad de puertas conectadas a la inicial
-            cout << "WHAT" << endl;
-            cout << nCreando << endl;
             if(nCreando == 0) {
                 return 0;
             }

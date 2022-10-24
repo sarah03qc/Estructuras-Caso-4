@@ -42,6 +42,9 @@ class List {
         }
 
         int getSize() {
+            if (this == NULL){
+                return 0;
+            }
             return quantity;
         }
 

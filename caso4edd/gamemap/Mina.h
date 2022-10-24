@@ -32,14 +32,10 @@ class Mina {
                     break;
                 }
                 nodo = estaMina->add(nodo, new int(potencia));   //se agrega nodo a la mina con el potencial
-                cout << "agregando nodo al arbol" << endl;
+                cout << "Agregando nodo al arbol" << endl;
                 Node<Camara> *found = estaMina->find(nodo, new int(potencia));     //se busca para asignarle "contenido", que es la camara
                 found->setContent(chamber);
-                cout << "minerals " << found->getContent()->getMinerales() << endl;
-                cout << "Camara set " << i << endl;
             }
-            //estaMina->getRoot()->getContent()->setMinerales(0);
-            //nodo->getContent()->setMinerales(0); //ponemos los minerales de la root en cero, porque no debe tener
         }
         AVLTree<Camara> *getEstaMina(){
             return this->estaMina;
