@@ -18,10 +18,6 @@ class CarefulStrategy : public Strategy{
         int decideAmount(int pAmount, int* pCurrentMinerals) override {
             int amount;
             int posibleMineAmount = this->characterCapacity - *pCurrentMinerals;
-            cout << "CANTIDAD DE MINERALES DE LA CAMARA: " << pAmount << endl;
-            cout << "PERSONAJE CAPACITY: " << this->characterCapacity << endl;
-            cout << "CURRENT MINERALS: " << *pCurrentMinerals << endl;
-            cout << "POSIBLE AMOUNT: " << posibleMineAmount << endl;
             if(posibleMineAmount >= pAmount){
                 // se lleva los minerales dejando solo uno
                 amount = pAmount - 1;
@@ -30,7 +26,6 @@ class CarefulStrategy : public Strategy{
                 // si es menor la cantidad que puede llevar que la que hay, solo se lleva lo que puede
                 amount = posibleMineAmount;
             }
-            cout << "CAREFUL " << amount << endl;
             return amount;
         }
 

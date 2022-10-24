@@ -22,7 +22,6 @@ class SelflessStrategy : public Strategy{
             //cout << "DECIDE AMOUNT" << endl;
             int amount;
             int posibleMineAmount = this->characterCapacity - *pCurrentMinerals;
-            cout << "CANTIDAD DE MINERALES DE LA CAMARA: " << pAmount << endl;
             //cout << "PERSONAJE CAPACITY: " << this->characterCapacity << endl;
             //cout << "CURRENT MINERALS: " << *pCurrentMinerals << endl;
             //cout << "POSIBLE AMOUNT: " << posibleMineAmount << endl;
@@ -35,7 +34,6 @@ class SelflessStrategy : public Strategy{
                 // su capacidad no le deja llevarse todo, entonces se lleva lo que puede
                 amount = posibleMineAmount;
             }
-            cout << "SELFLESS " << amount << endl;
             return amount;
         }
 

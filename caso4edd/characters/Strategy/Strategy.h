@@ -105,8 +105,7 @@ class Strategy : Observable{
                         notifyObservers(travelPetition, currentCamara->getContent()->getDistance());
                         // el personaje decide si minar o no la camara
                         if(decideMine() == true){
-
-                            mine(currentCamara->getContent(), minerals);
+                            mine(currentCamara, minerals, bifurcaciones, camaraRaiz, pListaDoors);
                             // despues de minar el personaje revisa que no sobrepase su capacidad de carga
                             notifyObservers(checkPetition);
                             //verificar que la camara tenga cero
@@ -133,15 +132,15 @@ class Strategy : Observable{
             if (chosenPath == left){
                 if(pCamaraRaiz->getLeft() != NULL){
                     currentCamara = pCamaraRaiz->getLeft();
-                }else{
+                }else if(pCamaraRaiz->getRight() != NULL){
                     currentCamara = pCamaraRaiz->getRight();
                 }
             }
             else{
                 if(pCamaraRaiz->getRight() != NULL){
                     currentCamara = pCamaraRaiz->getRight();
-                }else{
-                    currentCamara = pCamaraRaiz->getLeft();
+                }else if(pCamaraRaiz->getLeft() != NULL){
+                    currentCamara = pCamaraRaiz->getRight();
                 }
             }
             return currentCamara;
@@ -152,13 +151,30 @@ class Strategy : Observable{
             return decision;
         }
 
-        void mine(Camara *pCamara, int* minerals) {
+        void mine(Node<Camara> *currentCamara, int* minerals, AVLTree<Camara> *bifurcaciones, Node<Camara> *camaraRaiz, List<Door> *pListaDoors) {
             this->state = decidiendo;
             notifyObservers(statePetition);
-            int amount = decideAmount(pCamara->getMinerales(), minerals);
+            int amount = decideAmount(currentCamara->getContent()->getMinerales(), minerals);
+            if(amount < 1 || amount > 20){
+                amount = 0;
+            }
             this->state = minando;
             notifyObservers(statePetition);
-            pCamara->setMinerales(pCamara->getMinerales() - amount);
+            int minerales = currentCamara->getContent()->getMinerales();
+            int resultadoResta = currentCamara->getContent()->getMinerales() - amount;
+            if((resultadoResta) <= 0){
+                currentCamara->getContent()->setMinerales(0);
+                if(currentCamara->getContent()->getMinerales() == 0){
+                    leave(walkedPath, enteredDoor, pListaDoors);
+                    // se busca el nodo en el arbol
+                    Node<Camara> *camaraToDelete = bifurcaciones->find(camaraRaiz, currentCamara->getData());
+                    bifurcaciones->destroy(camaraToDelete);
+                }
+
+            }
+            else{
+                currentCamara->getContent()->setMinerales(resultadoResta);
+            }
             notifyObservers(setPetition, amount);
         }
 

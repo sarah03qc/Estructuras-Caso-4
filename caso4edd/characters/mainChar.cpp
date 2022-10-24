@@ -1,5 +1,7 @@
 #include "Character.h"
 #include <thread>
+#include <chrono>
+#include <iostream>
 #include <ctime>
 #include <cstdio>
 #include "Strategy/DoubtfulStrategy.h"
@@ -10,7 +12,7 @@
 
 using namespace std;
 
-#define GAME_DURATION 20       // en segundos
+#define GAME_DURATION 120       // en segundos
 
 #define MAX_CHARACTERS 3
 #define EXPLORER_SPEED 20
@@ -20,7 +22,7 @@ using namespace std;
 #define TOPO_SPEED 7
 #define TOPO_LOAD_CAPACITY 15
 
-//struct timespec pausa = {10,0};     // solo para probar algo
+struct timespec pausa = {10,0};     
 
 int selectedCharacters[MAX_CHARACTERS];
 int selectedStrategies[MAX_CHARACTERS];
@@ -60,15 +62,6 @@ void characterThreeSimulation(){
     playerCharacters[personajeTres]->play(pListaDoors);
 }
 
-/*
-void charactersSimulation(){
-    cout << "Inicia" << endl;
-    playerCharacters[personajeUno]->play(pListaDoors);
-    playerCharacters[personajeDos]->play(pListaDoors);
-    playerCharacters[personajeTres]->play(pListaDoors);
-}
-*/
-
 void loadStrategies(){
     for (int index = 0; index < MAX_CHARACTERS; ++index){
         Strategy *strategy;
@@ -81,7 +74,6 @@ void loadStrategies(){
             playerCharacters[index]->setCharacterStrategy(strategy);
         }
         else{
-            cout << "SELFLESS " << endl;
             strategy = new SelflessStrategy();
             playerCharacters[index]->setCharacterStrategy(strategy);
         }
@@ -132,15 +124,15 @@ void askPlayer(){
 
         cout << "\nPersonaje 1: ";
         cin >> selectedCharacters[0];
-        cout << "\nEstrategia del personaje 1: ";
+        cout << "Estrategia del personaje 1: ";
         cin >> selectedStrategies[0];
-        cout << "Personaje 2: ";
+        cout << "\nPersonaje 2: ";
         cin >> selectedCharacters[1];
-        cout << "\nEstrategia del personaje 2: ";
+        cout << "Estrategia del personaje 2: ";
         cin >> selectedStrategies[1];
-        cout << "Personaje 3: ";
+        cout << "\nPersonaje 3: ";
         cin >> selectedCharacters[2];
-        cout << "\nEstrategia del personaje 3: ";
+        cout << "Estrategia del personaje 3: ";
         cin >> selectedStrategies[2];
         loadCharacters();
         loadStrategies();
@@ -152,46 +144,33 @@ void gameSimulation(){
     time_t startTime = time(NULL);
     cout << "\nHora de inicio de la partida: " << ctime(&startTime) << endl;
     clock_t now = clock();      //para marcar la hora
-    while(clock() - now < GAME_DURATION * CLOCKS_PER_SEC){
-        askPlayer();
-        GameMap* juegomapa = new GameMap(10);
-        puertaRaiz = juegomapa->getPuerta();
-        pListaDoors = puertaRaiz->getConnectedDoors();
-        thread charOneThread(characterOneSimulation);
-        thread charTwoThread(characterTwoSimulation);
-        thread charThreeThread(characterThreeSimulation);
-        charOneThread.join();
-        charTwoThread.join();
-        charThreeThread.join();
+    GameMap* juegomapa = new GameMap(10);
+    puertaRaiz = juegomapa->getPuerta();
+    pListaDoors = puertaRaiz->getConnectedDoors();
+    askPlayer();
+    thread charOneThread(characterOneSimulation);
+    thread charTwoThread(characterTwoSimulation);
+    thread charThreeThread(characterThreeSimulation);
+    charOneThread.join();
+    charTwoThread.join();
+    charThreeThread.join();
+    double duration = (clock() - now) / (double)CLOCKS_PER_SEC;
+    cout << "DURACION " << duration << endl;
+    while(duration < GAME_DURATION){
+        duration = (clock() - now) / (double)CLOCKS_PER_SEC;
+        cout << "DURACION " << duration << endl;
+        this_thread::sleep_for(chrono::milliseconds(1000));
     }
     time_t final = time(NULL);
-    cout << "CANTIDAD DE MINERALES: " << puertaRaiz->getConnectedDoors()->find(0)->getMinerals() << endl;
+    cout << "CANTIDAD DE MINERALES: " << puertaRaiz->getMinerals() << endl;
     cout << "Hora de finalizacion de la partida: " << ctime(&final) << endl;
 
 }
 
 int main(){
-    /*
-    srand(time(0));
-    RECORDAR: cuando utilizamos rand hay que inicializar srand una vez al inicio del programa
-    para que rand no genere los mismos numeros todas las veces!!!!
-    */
     srand((unsigned) time(NULL));
     thread gameThread(gameSimulation);
     gameThread.join();
-    time_t final = time(NULL);
-    cout << "CANTIDAD DE MINERALES: " << puertaRaiz->getConnectedDoors()->find(0)->getMinerals() << endl;
-    cout << "Hora de finalizacion de la partida: " << ctime(&final) << endl;
-
-
-    /*
-    //solo para chequear que este funcionando
-    for(int i = 0; i < MAX_CHARACTERS; ++i){
-        cout << playerCharacters[i]->getName() << endl;
-        
-    }
-    */
-
 }
 
 

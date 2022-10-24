@@ -67,6 +67,7 @@ class Character : public Observer{
                 updateState(caminando);
                 while (clock() - now < time * CLOCKS_PER_SEC){
                 }
+
             }
 
             void returnMinerals(queue<Camara*> *pWalkedPath, Door *pEnteredDoor, List<Door> *pListaDoors){
@@ -78,7 +79,7 @@ class Character : public Observer{
                 }
                 travel(distance);
                 updateState(enpuertaRaiz);
-                cout << "El " << this->name << " devolvio " << this->currentMinerals << endl;
+                cout << "El " << this->name << " devolvio " << this->currentMinerals << " minerales"<< endl;
                 pEnteredDoor->setMinerals(pEnteredDoor->getMinerals() + this->currentMinerals);
                 this->resetCurrentMinerals();
                 play(pListaDoors);
