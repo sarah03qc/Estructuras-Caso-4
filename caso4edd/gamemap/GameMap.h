@@ -12,12 +12,20 @@ using namespace std;
 #define GAMEMAP 1
 
 class GameMap {
+    private:
+        Door* puerta;
 
     public:
         GameMap(int nDoors) {
-            Door* puerta = new Door(); 
+            puerta = new Door(); 
             cout << "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" << endl;
             puerta->generarConexiones(nDoors);  //con crear esto todo se debe generar
         }    
+
+        Door* getPuerta(){
+            return this->puerta;
+        }
+
+
 };
 #endif

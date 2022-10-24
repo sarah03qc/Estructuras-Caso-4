@@ -26,27 +26,22 @@ class DoubtfulStrategy : public Strategy{
             return decision;
         }
 
-        Node<Camara>* decidePath(Node<Camara>* pCamaraRaiz) override {
-            Node<Camara> *currentCamara;
-            int chosenPath = 1 + rand() % (3 - 1);
-            if (chosenPath == left){
-                currentCamara = pCamaraRaiz->getLeft();
-                }
-            else{
-                currentCamara = pCamaraRaiz->getRight();
-            }
-            return currentCamara;
-        }
-
-        int decideAmount(int pCapacity, int* pCurrentMinerals) override {
+        int decideAmount(int pAmount, int* pCurrentMinerals) override {
+            //cout << "DOUBFUL" << endl;
             int amount;
             int posibleMineAmount = this->characterCapacity - *pCurrentMinerals;
-            if(posibleMineAmount >= pCapacity){
-                amount = 0 + rand() % ((pCapacity + 1) - 0);
+            cout << "CANTIDAD DE MINERALES DE LA CAMARA: " << pAmount << endl;
+
+            //cout << "PERSONAJE CAPACITY: " << this->characterCapacity << endl;
+            //cout << "CURRENT MINERALS: " << *pCurrentMinerals << endl;
+            //cout << "POSIBLE AMOUNT: " << posibleMineAmount << endl;
+            if(posibleMineAmount >= pAmount){
+                amount = 0 + rand() % ((pAmount + 1) - 0);
             }
             else{
                 amount = 0 + rand() % ((posibleMineAmount + 1) - 0);
             }
+            cout << "DOUBTFUL " << amount << endl;
             return amount;
         }
 

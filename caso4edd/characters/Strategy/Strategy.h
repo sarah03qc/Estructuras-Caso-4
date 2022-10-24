@@ -29,6 +29,10 @@ class Strategy : Observable{
             setPetition = 2,
             travelPetition = 3
         };
+        enum path{
+            left = 0,
+            right = 1
+        };
 
         enum charStates{
                 enpuertaRaiz = 0,
@@ -81,14 +85,14 @@ class Strategy : Observable{
         };
         
         void move(List<Door> *pListaDoors, string name, int* minerals) {
-            cout << "ENTRO A MOVE" << endl;
-            cout << pListaDoors->getSize() << endl;
             for (int currentDoor = 0; currentDoor < pListaDoors->getSize(); ++currentDoor){
-                if (pListaDoors->find(currentDoor)->hasMine()){
-                    cout << name << " entró a una puerta" << endl;
+                int door = 1 + rand() % (5 - 1);
+                cout << "El " << name << " entro a una puerta" << endl;
+                if (pListaDoors->find(door)->hasMine()){
+                    cout << "El " << name << " se mantuvo en la misma puerta" << endl;
                     enteredDoor = pListaDoors->find(currentDoor);
                     Mina *characterInMine = enteredDoor->getMine();
-                    cout << name << " entró a un túnel" << endl;
+                    cout << "El " << name << " entro a un tunel" << endl;
                     AVLTree<Camara> *bifurcaciones = characterInMine->getEstaMina();
                     // camara raiz
                     Node<Camara> *camaraRaiz = bifurcaciones->getRoot();
@@ -97,20 +101,17 @@ class Strategy : Observable{
                         // antes de decidir si caminar revisa que no sobrepase su capacidad de carga
                         notifyObservers(checkPetition);
                         currentCamara = decidePath(camaraRaiz);    // el personaje decide
-                        /*
-                        if(currentCamara == NULL){
-                            cout << "El " << pCharacter->getName() << " se quedo quieto en la camara"<< endl;
-                        }
-                        */
                         getWalkedPath()->push(currentCamara->getContent());
                         notifyObservers(travelPetition, currentCamara->getContent()->getDistance());
                         // el personaje decide si minar o no la camara
                         if(decideMine() == true){
+
                             mine(currentCamara->getContent(), minerals);
                             // despues de minar el personaje revisa que no sobrepase su capacidad de carga
                             notifyObservers(checkPetition);
                             //verificar que la camara tenga cero
                             if(currentCamara->getContent()->getMinerales() == 0){
+                                leave(walkedPath, enteredDoor, pListaDoors);
                                 // se busca el nodo en el arbol
                                 Node<Camara> *camaraToDelete = bifurcaciones->find(camaraRaiz, currentCamara->getData());
                                 bifurcaciones->destroy(camaraToDelete);
@@ -121,8 +122,28 @@ class Strategy : Observable{
             }                    
         }
 
-        virtual Node<Camara>* decidePath(Node<Camara>* pCamaraRaiz){
+        virtual void leave(queue<Camara*> *pWalkedPath, Door *pEnteredDoor, List<Door> *pListaDoors){
+            bool leave;
+        };
+
+        // el personaje no le interesa mucho el decidir el camino
+        Node<Camara>* decidePath(Node<Camara>* pCamaraRaiz){
             Node<Camara> *currentCamara;
+            int chosenPath = 1 + rand() % (3 - 1);
+            if (chosenPath == left){
+                if(pCamaraRaiz->getLeft() != NULL){
+                    currentCamara = pCamaraRaiz->getLeft();
+                }else{
+                    currentCamara = pCamaraRaiz->getRight();
+                }
+            }
+            else{
+                if(pCamaraRaiz->getRight() != NULL){
+                    currentCamara = pCamaraRaiz->getRight();
+                }else{
+                    currentCamara = pCamaraRaiz->getLeft();
+                }
+            }
             return currentCamara;
         }
 
@@ -141,38 +162,10 @@ class Strategy : Observable{
             notifyObservers(setPetition, amount);
         }
 
-        virtual int decideAmount(int pCapacity, int* pCurrentMinerals){
+        virtual int decideAmount(int pAmount, int* pCurrentMinerals) {
             int amount;
             return amount;
         }
 
-/*
-        void returnMinerals(queue<Camara*> *pWalkedPath, Door *pEnteredDoor, List<Door> *pListaDoors){
-            int distance = 0;
-            // se calcula la distancia para devolverse a la puerta
-            while(this->walkedPath->size() > 0){
-                distance += this->walkedPath->front()->getDistance();
-                this->walkedPath->pop();
-            }
-            travel(pCharacter, distance);
-            cout << "El " << pCharacter->getName() << " devolvio" << pCharacter->getCurrentMinerals() << endl;
-            pEnteredDoor->setMinerals(pEnteredDoor->getMinerals() + pCharacter->getCurrentMinerals());
-            pCharacter->resetCurrentMinerals();
-        }
-        void checkCurrentMinerals(Character *pCharacter, Door *pEnteredDoor, List<Door> *pListaDoors){
-            if(pCharacter->getCurrentMinerals() == pCharacter->getLoadingCapacitys()){
-                returnMinerals(pCharacter, pEnteredDoor, pListaDoors);
-            }
-        }
-
-        void travel(Character *pCharacter, int distance){
-            clock_t now = clock(); 
-            float time = distance / pCharacter->getSpeed();     // se calcula lo que va a durar viajando
-            cout << "El " << pCharacter->getName() << " esta caminando" << endl;
-            while (clock() - now < time * CLOCKS_PER_SEC){
-            }
-            cout << "El " << pCharacter->getName() << " termino de caminar" << endl;
-        }
-*/
 };
 #endif

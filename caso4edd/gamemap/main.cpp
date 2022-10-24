@@ -5,15 +5,19 @@
 #include "Mina.h"
 #include "Camara.h"
 #include "GameMap.h"
+#include <stdlib.h>
+#include <stdexcept>
+
 
 using namespace std;
 
 
 int main() {
     //este main es para probar todo lo que tiene que ver con el mapa fisico
+    bool check = false;
     srand((unsigned) time(NULL));
-    GameMap* juegomapa = new GameMap(10);  
-    
+    GameMap* juegomapa = new GameMap(10);
+
       //prueba de generar puertas y sus conexiones, funciona
     /*
     Door* puerta = new Door();

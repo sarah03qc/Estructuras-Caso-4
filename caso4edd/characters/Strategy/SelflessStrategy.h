@@ -12,25 +12,32 @@ using namespace std;
 #define SELFLESS_STRATEGY 1
 class SelflessStrategy : public Strategy{
     public: 
-
         bool decideMine() override {
+            // siempre decide minar
             bool decision = true;
             return decision;
         }
         
-        int decideAmount(int pCapacity, int* pCurrentMinerals) override {
+        int decideAmount(int pAmount, int* pCurrentMinerals) override {
+            //cout << "DECIDE AMOUNT" << endl;
             int amount;
             int posibleMineAmount = this->characterCapacity - *pCurrentMinerals;
-            if(posibleMineAmount >= pCapacity){
-                amount = posibleMineAmount;
+            cout << "CANTIDAD DE MINERALES DE LA CAMARA: " << pAmount << endl;
+            //cout << "PERSONAJE CAPACITY: " << this->characterCapacity << endl;
+            //cout << "CURRENT MINERALS: " << *pCurrentMinerals << endl;
+            //cout << "POSIBLE AMOUNT: " << posibleMineAmount << endl;
+            if(posibleMineAmount >= pAmount){
+                // aun que pueda llevar mas no hay suficiente mineral
+                // entonces lleva todo el mineral que hay
+                amount = pAmount;
             }
             else{
-                amount = 0 + rand() % ((posibleMineAmount + 1) - 0);
+                // su capacidad no le deja llevarse todo, entonces se lleva lo que puede
+                amount = posibleMineAmount;
             }
+            cout << "SELFLESS " << amount << endl;
             return amount;
         }
-
-
 
 };
 #endif

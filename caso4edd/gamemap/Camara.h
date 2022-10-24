@@ -42,6 +42,7 @@ class Camara {
         }
 
         void setMinerales(int pCantidad) {
+            cout << "cantidad de minerales recibida " << pCantidad << endl;
             this->minerales = pCantidad;
         }
 };

@@ -39,12 +39,10 @@ class Character : public Observer{
                 this->loadingCapacity = pLoadingCapacity;
                 this->speed = pSpeed;
                 this->currentMinerals = 0;
-                characterStrategy->setCharacterCapacity(this->loadingCapacity);
-
             }
 
             void play(List<Door> *pListaDoors){
-                cout << "play" << endl;
+                cout << "El " << name << " empezo a moverse" << endl;
                 this->characterStrategy->move(pListaDoors, this->name, &currentMinerals);
             }
 
@@ -58,13 +56,17 @@ class Character : public Observer{
                 showCurrentState();
             }
 
+            void leave(queue<Camara*> *pWalkedPath, Door *pEnteredDoor, List<Door> *pListaDoors){
+                returnMinerals(pWalkedPath, pEnteredDoor, pListaDoors);
+            
+            };
+
             void travel(int distance) override{
                 clock_t now = clock(); 
                 float time = distance / this->speed;     // se calcula lo que va a durar viajando
                 updateState(caminando);
                 while (clock() - now < time * CLOCKS_PER_SEC){
                 }
-                updateState(enpuertaRaiz);
             }
 
             void returnMinerals(queue<Camara*> *pWalkedPath, Door *pEnteredDoor, List<Door> *pListaDoors){
@@ -75,9 +77,11 @@ class Character : public Observer{
                     pWalkedPath->pop();
                 }
                 travel(distance);
-                cout << "El " << this->name << " devolvio" << this->currentMinerals << endl;
+                updateState(enpuertaRaiz);
+                cout << "El " << this->name << " devolvio " << this->currentMinerals << endl;
                 pEnteredDoor->setMinerals(pEnteredDoor->getMinerals() + this->currentMinerals);
                 this->resetCurrentMinerals();
+                play(pListaDoors);
             }
 
             void checkCurrentMinerals(queue<Camara*> *pWalkedPath , Door *pEnteredDoor, List<Door> *pListaDoors) override{
@@ -95,6 +99,7 @@ class Character : public Observer{
             }
 
             void setCurrentMinerals(int pAmount) override{
+                cout << "El " << this->name << " mino " << pAmount << " minerales" << endl;
                 this->currentMinerals += pAmount;
             }
 
@@ -112,6 +117,7 @@ class Character : public Observer{
 
             void setCharacterStrategy(Strategy *chosedStrategy){
                 this->characterStrategy = chosedStrategy;
+                characterStrategy->setCharacterCapacity(this->loadingCapacity);
             }
 };
 #endif

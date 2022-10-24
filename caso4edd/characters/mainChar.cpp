@@ -1,13 +1,16 @@
 #include "Character.h"
 #include <thread>
 #include <ctime>
-#include<cstdio>
+#include <cstdio>
 #include "Strategy/DoubtfulStrategy.h"
+#include "Strategy/CarefulStrategy.h"
+#include "Strategy/SelflessStrategy.h"
 #include "Strategy/Strategy.h"
+#include "../gamemap/GameMap.h"
 
 using namespace std;
 
-#define GAME_DURATION 120       // en segundos
+#define GAME_DURATION 20       // en segundos
 
 #define MAX_CHARACTERS 3
 #define EXPLORER_SPEED 20
@@ -25,6 +28,7 @@ Character *playerCharacters[MAX_CHARACTERS];
 Strategy *strategyList [MAX_CHARACTERS];
 
 List<Door> *pListaDoors;
+Door* puertaRaiz;
 
 
 enum characters{
@@ -32,6 +36,7 @@ enum characters{
     carguero = 2,
     topo = 3
 };
+
 enum strategies{
     doubtfulStrategy = 1,
     carefulStrategy = 2,
@@ -44,72 +49,81 @@ enum amountCharacters{
     personajeTres = 2
 };
 
-/*
-void characterOneSimulation(List<Door> *pListaDoors){
+
+void characterOneSimulation(){
     playerCharacters[personajeUno]->play(pListaDoors);
-
 }
-void characterTwoSimulation(List<Door> *pListaDoors){
+void characterTwoSimulation(){
     playerCharacters[personajeDos]->play(pListaDoors);
-
 }
-void characterThreeSimulation(List<Door> *pListaDoors){
+void characterThreeSimulation(){
+    playerCharacters[personajeTres]->play(pListaDoors);
+}
+
+/*
+void charactersSimulation(){
+    cout << "Inicia" << endl;
+    playerCharacters[personajeUno]->play(pListaDoors);
+    playerCharacters[personajeDos]->play(pListaDoors);
     playerCharacters[personajeTres]->play(pListaDoors);
 }
 */
 
-void charactersSimulation(){
-    cout << "inicia" << endl;
-    playerCharacters[personajeUno]->play(pListaDoors);
-    playerCharacters[personajeDos]->play(pListaDoors);
-    playerCharacters[personajeTres]->play(pListaDoors);
-}
-
 void loadStrategies(){
     for (int index = 0; index < MAX_CHARACTERS; ++index){
         Strategy *strategy;
-        if(selectedStrategies[index] = doubtfulStrategy){
+        if(selectedStrategies[index] == doubtfulStrategy){
             strategy = new DoubtfulStrategy();
-            strategy->registerObserver(playerCharacters[index]);
             playerCharacters[index]->setCharacterStrategy(strategy);
         }
-        else if(selectedStrategies[index] = carefulStrategy){
-            //strategy = new CarefulStrategy();
+        else if(selectedStrategies[index] == carefulStrategy){
+            strategy = new CarefulStrategy();
             playerCharacters[index]->setCharacterStrategy(strategy);
         }
         else{
-            //strategy = new SelflessStrategy();
+            cout << "SELFLESS " << endl;
+            strategy = new SelflessStrategy();
             playerCharacters[index]->setCharacterStrategy(strategy);
         }
+        strategy->registerObserver(playerCharacters[index]);
     }
+}
+
+string checkAndAssingNames(int index, string characterName, int charType){
+    int listaApariciones [MAX_CHARACTERS];
+    int apariciones = 1;
+    for(int counter = 0; counter < index; ++ counter){
+        if(selectedCharacters[counter] == charType){
+            ++ apariciones;
+        }
+    }
+    characterName += to_string(apariciones);
+    return characterName;
 }
 
 void loadCharacters(){
     // se crean los personajes del jugador
     for(int index = 0; index < MAX_CHARACTERS; ++index){
         Character *character;
+        string name;
         if (selectedCharacters[index] == explorador){
-            character = new Character("explorador", EXPLORER_LOAD_CAPACITY, EXPLORER_SPEED);
+            name = checkAndAssingNames(index, "explorador ", explorador);
+            character = new Character(name, EXPLORER_LOAD_CAPACITY, EXPLORER_SPEED);
         }
         else if(selectedCharacters[index] == carguero){
-            character = new Character("carguero", CARGUERO_LOAD_CAPACITY, CARGUERO_SPEED);
+            name = checkAndAssingNames(index, "carguero ", carguero);
+            character = new Character(name, CARGUERO_LOAD_CAPACITY, CARGUERO_SPEED);
         }
         else{
-            character = new Character("topo", TOPO_LOAD_CAPACITY, TOPO_SPEED);
+            name = checkAndAssingNames(index, "topo ", topo);
+            character = new Character(name, TOPO_LOAD_CAPACITY, TOPO_SPEED);
         }
         playerCharacters[index] = character;
     }
 
 }
 
-void createDoor(){
-    cout << "aqui" << endl;
-    Door* puerta = new Door();
-    
-}
-
 void askPlayer(){
-    /* 
         cout << "\n-Seleccione sus personajes y estrategias-" << endl;
         cout << "\nPersonajes:                   | Estrategias" << endl;
         cout << "   Explorador (1)             |    Doubtful Strategy   (1)" << endl;
@@ -128,18 +142,8 @@ void askPlayer(){
         cin >> selectedCharacters[2];
         cout << "\nEstrategia del personaje 3: ";
         cin >> selectedStrategies[2];
-        */
-       selectedCharacters[0] = 1;
-       selectedStrategies[0] = 1;
-       selectedCharacters[1] = 1;
-       selectedStrategies[1] = 1;
-       selectedCharacters[2] = 1;
-       selectedStrategies[2] = 1;
-
-
         loadCharacters();
         loadStrategies();
- 
 }
 
 
@@ -148,15 +152,22 @@ void gameSimulation(){
     time_t startTime = time(NULL);
     cout << "\nHora de inicio de la partida: " << ctime(&startTime) << endl;
     clock_t now = clock();      //para marcar la hora
-    askPlayer();
-    createDoor();
-    thread charactersThread(charactersSimulation);
-    charactersThread.join();
-    //while(clock() - now < GAME_DURATION * CLOCKS_PER_SEC){
-    //}
-
+    while(clock() - now < GAME_DURATION * CLOCKS_PER_SEC){
+        askPlayer();
+        GameMap* juegomapa = new GameMap(10);
+        puertaRaiz = juegomapa->getPuerta();
+        pListaDoors = puertaRaiz->getConnectedDoors();
+        thread charOneThread(characterOneSimulation);
+        thread charTwoThread(characterTwoSimulation);
+        thread charThreeThread(characterThreeSimulation);
+        charOneThread.join();
+        charTwoThread.join();
+        charThreeThread.join();
+    }
     time_t final = time(NULL);
+    cout << "CANTIDAD DE MINERALES: " << puertaRaiz->getConnectedDoors()->find(0)->getMinerals() << endl;
     cout << "Hora de finalizacion de la partida: " << ctime(&final) << endl;
+
 }
 
 int main(){
@@ -165,9 +176,13 @@ int main(){
     RECORDAR: cuando utilizamos rand hay que inicializar srand una vez al inicio del programa
     para que rand no genere los mismos numeros todas las veces!!!!
     */
-    
+    srand((unsigned) time(NULL));
     thread gameThread(gameSimulation);
     gameThread.join();
+    time_t final = time(NULL);
+    cout << "CANTIDAD DE MINERALES: " << puertaRaiz->getConnectedDoors()->find(0)->getMinerals() << endl;
+    cout << "Hora de finalizacion de la partida: " << ctime(&final) << endl;
+
 
     /*
     //solo para chequear que este funcionando

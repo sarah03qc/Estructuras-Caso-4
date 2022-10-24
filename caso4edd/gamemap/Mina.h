@@ -18,7 +18,7 @@ class Mina {
 
     public:
         Mina() {
-            cantidadCamaras = rand() % (30 - 3) + 3;  //un rango del numero de camaras, pero se puede cambiar
+            cantidadCamaras = rand() % (10 - 3) + 3;  //un rango del numero de camaras, pero se puede cambiar
             Node<Camara> *nodo = NULL;
             cout << "Cantidad generada de camaras es: " << cantidadCamaras << endl;
             for(int i = 0; i < cantidadCamaras; i++) {
